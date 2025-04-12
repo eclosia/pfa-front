@@ -29,7 +29,7 @@ const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
-    subItems: [{ name: "Ecommerce", path: "/", pro: false }],
+    subItems: [{ name: "ECLOSIA", path: "/", pro: false }],
   },
   {
     icon: <CalenderIcon />,
@@ -308,14 +308,14 @@ const AppSidebar: React.FC = () => {
             <>
               <img
                 className="dark:hidden"
-                src="/images/logo/logo.svg"
+                src="/images/logo/eclosia_dark.png"
                 alt="Logo"
                 width={150}
                 height={40}
               />
               <img
                 className="hidden dark:block"
-                src="/images/logo/logo-dark.svg"
+                src="/images/eclosia_light.png"
                 alt="Logo"
                 width={150}
                 height={40}
@@ -323,7 +323,7 @@ const AppSidebar: React.FC = () => {
             </>
           ) : (
             <img
-              src="/images/logo/logo-icon.svg"
+              src="/images/Eclosia_favicon.png"
               alt="Logo"
               width={32}
               height={32}
