@@ -3,14 +3,170 @@ import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
+import { useState } from "react";
+
+interface Experience {
+  id: string;
+  title: string;
+  company: string;
+  period: string;
+  description: string;
+}
+
+interface Formation {
+  id: string;
+  diploma: string;
+  school: string;
+  period: string;
+  description: string;
+}
 
 export default function UserInfoCard() {
   const { isOpen, openModal, closeModal } = useModal();
+  const [formData, setFormData] = useState({
+    firstName: "Rida",
+    lastName: "Mihi",
+    personalEmail: "ridamihi12@gmail.com",
+    academicEmail: "ridamihi@etu.uae.ac.ma",
+    phone: "+09 363 398 46",
+    apogeeNumber: "57382"
+  });
+
+  const [experiences, setExperiences] = useState<Experience[]>([
+    {
+      id: "1",
+      title: "Développeur Full Stack",
+      company: "Tech Company",
+      period: "2023 - Présent",
+      description: "Développement d'applications web avec React et Node.js"
+    }
+  ]);
+
+  const [formations, setFormations] = useState<Formation[]>([
+    {
+      id: "1",
+      diploma: "Master en Informatique",
+      school: "Université Hassan II",
+      period: "2021 - 2023",
+      description: "Spécialisation en développement web"
+    }
+  ]);
+
+  const [newExperience, setNewExperience] = useState<Experience>({
+    id: "",
+    title: "",
+    company: "",
+    period: "",
+    description: ""
+  });
+
+  const [newFormation, setNewFormation] = useState<Formation>({
+    id: "",
+    diploma: "",
+    school: "",
+    period: "",
+    description: ""
+  });
+
+  const [editingExperience, setEditingExperience] = useState<Experience | null>(null);
+  const [editingFormation, setEditingFormation] = useState<Formation | null>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleExperienceChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    if (editingExperience) {
+      setEditingExperience(prev => prev ? { ...prev, [name]: value } : null);
+    } else {
+      setNewExperience(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleFormationChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    if (editingFormation) {
+      setEditingFormation(prev => prev ? { ...prev, [name]: value } : null);
+    } else {
+      setNewFormation(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const addExperience = () => {
+    if (newExperience.title && newExperience.company) {
+      setExperiences(prev => [...prev, { ...newExperience, id: Date.now().toString() }]);
+      setNewExperience({
+        id: "",
+        title: "",
+        company: "",
+        period: "",
+        description: ""
+      });
+    }
+  };
+
+  const addFormation = () => {
+    if (newFormation.diploma && newFormation.school) {
+      setFormations(prev => [...prev, { ...newFormation, id: Date.now().toString() }]);
+      setNewFormation({
+        id: "",
+        diploma: "",
+        school: "",
+        period: "",
+        description: ""
+      });
+    }
+  };
+
+  const startEditingExperience = (experience: Experience) => {
+    setEditingExperience(experience);
+  };
+
+  const startEditingFormation = (formation: Formation) => {
+    setEditingFormation(formation);
+  };
+
+  const saveExperienceEdit = () => {
+    if (editingExperience) {
+      setExperiences(prev =>
+        prev.map(exp => (exp.id === editingExperience.id ? editingExperience : exp))
+      );
+      setEditingExperience(null);
+    }
+  };
+
+  const saveFormationEdit = () => {
+    if (editingFormation) {
+      setFormations(prev =>
+        prev.map(form => (form.id === editingFormation.id ? editingFormation : form))
+      );
+      setEditingFormation(null);
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditingExperience(null);
+    setEditingFormation(null);
+  };
+
+  const removeExperience = (id: string) => {
+    setExperiences(prev => prev.filter(exp => exp.id !== id));
+  };
+
+  const removeFormation = (id: string) => {
+    setFormations(prev => prev.filter(form => form.id !== id));
+  };
+
   const handleSave = () => {
-    // Handle save logic here
-    console.log("Saving changes...");
+    console.log("Saving changes:", { formData, experiences, formations });
     closeModal();
   };
+
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
@@ -25,7 +181,7 @@ export default function UserInfoCard() {
                 Prénom
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Rida
+                {formData.firstName}
               </p>
             </div>
 
@@ -34,16 +190,25 @@ export default function UserInfoCard() {
                 Nom
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Mihi
+                {formData.lastName}
               </p>
             </div>
 
             <div>
               <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                Adresse email
+                Email personnel
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                ridamihi12@gmail.com
+                {formData.personalEmail}
+              </p>
+            </div>
+
+            <div>
+              <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                Email académique
+              </p>
+              <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                {formData.academicEmail}
               </p>
             </div>
 
@@ -52,7 +217,7 @@ export default function UserInfoCard() {
                 Téléphone
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                +09 363 398 46
+                {formData.phone}
               </p>
             </div>
 
@@ -61,7 +226,7 @@ export default function UserInfoCard() {
                 numéro apogée
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                57382
+                {formData.apogeeNumber}
               </p>
             </div>
           </div>
@@ -104,21 +269,6 @@ export default function UserInfoCard() {
             <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
               <div>
                 <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                  Liens sociaux
-                </h5>
-
-                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                  <div>
-                    <Label>Linkedin</Label>
-                    <Input
-                      type="text"
-                      value="https://www.linkedin.com/company/pimjo"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-7">
-                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
                   Informations personnelles
                 </h5>
 
@@ -127,7 +277,8 @@ export default function UserInfoCard() {
                     <Label>Prénom</Label>
                     <Input
                       type="text"
-                      value="Rida"
+                      name="firstName"
+                      value={formData.firstName}
                       disabled
                       className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 cursor-not-allowed"
                     />
@@ -137,17 +288,29 @@ export default function UserInfoCard() {
                     <Label>Nom de famille</Label>
                     <Input
                       type="text"
-                      value="Mihi"
+                      name="lastName"
+                      value={formData.lastName}
                       disabled
                       className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 cursor-not-allowed"
                     />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
-                    <Label>Addresse Email</Label>
+                    <Label>Email personnel</Label>
                     <Input
-                      type="text"
-                      value="ridamihi12@gmail.com"
+                      type="email"
+                      name="personalEmail"
+                      value={formData.personalEmail}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="col-span-2 lg:col-span-1">
+                    <Label>Email académique</Label>
+                    <Input
+                      type="email"
+                      name="academicEmail"
+                      value={formData.academicEmail}
                       disabled
                       className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 cursor-not-allowed"
                     />
@@ -155,20 +318,26 @@ export default function UserInfoCard() {
 
                   <div className="col-span-2 lg:col-span-1">
                     <Label>Téléphone</Label>
-                    <Input type="text" value="+09 363 398 46" />
+                    <Input
+                      type="text"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                    />
                   </div>
 
                   <div className="col-span-2">
                     <Label>numéro apogée</Label>
                     <Input
                       type="text"
-                      value="27930"
+                      name="apogeeNumber"
+                      value={formData.apogeeNumber}
                       disabled
                       className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 cursor-not-allowed"
                     />
                   </div>
                 </div>
-              </div>
+              </div> 
             </div>
             <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
               <Button size="sm" variant="outline" onClick={closeModal}>
@@ -183,4 +352,4 @@ export default function UserInfoCard() {
       </Modal>
     </div>
   );
-}
+} 

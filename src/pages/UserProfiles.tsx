@@ -2,6 +2,9 @@ import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import UserMetaCard from "../components/UserProfile/UserMetaCard";
 import UserInfoCard from "../components/UserProfile/UserInfoCard";
 import UserAddressCard from "../components/UserProfile/UserAddressCard";
+import UserSkillsCard from "../components/UserProfile/UserSkillsCard";
+import UserAcademicPathCard from "../components/UserProfile/UserAcademicPathCard";
+import UserExperienceCard from "../components/UserProfile/UserExperienceCard";
 import PageMeta from "../components/common/PageMeta";
 
 export default function UserProfiles() {
@@ -20,6 +23,9 @@ export default function UserProfiles() {
           <UserMetaCard />
           <UserInfoCard />
           <UserAddressCard />
+          <UserSkillsCard />
+          <UserAcademicPathCard />
+          <UserExperienceCard />
         </div>
       </div>
     </>

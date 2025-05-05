@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "title": "Stage Développeur Full Stack",
+    "company": "Tech Solutions",
+    "location": "Casablanca",
+    "type": "Stage",
+    "description": "Nous recherchons un stagiaire passionné par le développement web pour rejoindre notre équipe. Vous participerez au développement d'applications web modernes en utilisant les dernières technologies.",
+    "requirements": ["React", "Node.js", "MongoDB", "Git"],
+    "duration": "3 mois",
+    "startDate": "01/07/2024",
+    "salary": "3000-4000 MAD",
+    "contact": "recrutement@techsolutions.ma"
+  },
+  {
+    "id": 2,
+    "title": "Projet de Développement Mobile",
+    "company": "InnovApp",
+    "location": "Rabat",
+    "type": "Projet",
+    "description": "Développement d'une application mobile de gestion de tâches avec des fonctionnalités avancées de synchronisation et de collaboration en temps réel.",
+    "requirements": ["React Native", "Firebase", "Redux", "TypeScript"],
+    "duration": "2 mois",
+    "startDate": "15/06/2024",
+    "contact": "contact@innovapp.ma"
+  },
+  {
+    "id": 3,
+    "title": "Stage en Intelligence Artificielle",
+    "company": "AI Lab",
+    "location": "Agadir",
+    "type": "Stage",
+    "description": "Stage en développement d'applications d'IA et de machine learning. Vous travaillerez sur des projets concrets de classification d'images et de traitement du langage naturel.",
+    "requirements": ["Python", "TensorFlow", "PyTorch", "Machine Learning"],
+    "duration": "4 mois",
+    "startDate": "01/09/2024",
+    "salary": "3500-4500 MAD",
+    "contact": "ai@ailab.ma"
+  },
+  {
+    "id": 4,
+    "title": "Projet DevOps",
+    "company": "CloudTech",
+    "location": "Marrakech",
+    "type": "Projet",
+    "description": "Mise en place d'une infrastructure DevOps complète avec CI/CD, monitoring et automatisation des déploiements.",
+    "requirements": ["Docker", "Kubernetes", "Jenkins", "AWS"],
+    "duration": "3 mois",
+    "startDate": "01/07/2024",
+    "contact": "devops@cloudtech.ma"
+  },
+  {
+    "id": 5,
+    "title": "Stage Développeur Frontend",
+    "company": "WebCraft",
+    "location": "Tanger",
+    "type": "Stage",
+    "description": "Stage en développement frontend pour créer des interfaces utilisateur modernes et réactives. Vous travaillerez sur des projets web innovants.",
+    "requirements": ["React", "TypeScript", "Tailwind CSS", "GraphQL"],
+    "duration": "3 mois",
+    "startDate": "15/07/2024",
+    "salary": "2500-3500 MAD",
+    "contact": "careers@webcraft.ma"
+  }
+] 

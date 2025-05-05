@@ -18,9 +18,8 @@ import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
-
-
-
+import JobOffers from "./pages/JobOffers";
+import MessagingPage from "./components/Messaging/MessagingPage";
 
 export default function App() {
   return (
@@ -35,6 +34,7 @@ export default function App() {
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/blank" element={<Blank />} />
+            <Route path="/messaging" element={<MessagingPage />} />
 
             {/* Forms */}
             <Route path="/form-elements" element={<FormElements />} />
@@ -53,10 +53,14 @@ export default function App() {
             {/* Charts */}
             <Route path="/line-chart" element={<LineChart />} />
             <Route path="/bar-chart" element={<BarChart />} />
+
+            {/* Job Offers */}
+            <Route path="/job-offers" element={<JobOffers />} />
+
+            <Route path="/" element={<Home />} />
           </Route>
 
-          {/* Auth Layout */}
-          <Route index path="/" element={<SignIn />} />
+          {/* Auth Layout */} 
           <Route index path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
 
