@@ -20,6 +20,8 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import JobOffers from "./pages/JobOffers";
 import MessagingPage from "./components/Messaging/MessagingPage";
+import CompanyOffers from "./pages/CompanyOffers";
+import StudentEvaluation from "./pages/StudentEvaluation";
 
 export default function App() {
   return (
@@ -56,6 +58,10 @@ export default function App() {
 
             {/* Job Offers */}
             <Route path="/job-offers" element={<JobOffers />} />
+            
+            {/* Company Management */}
+            <Route path="/company-offers" element={<CompanyOffers />} />
+            <Route path="/student-evaluation" element={<StudentEvaluation />} />
 
             <Route path="/" element={<Home />} />
           </Route>

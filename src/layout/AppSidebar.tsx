@@ -14,8 +14,9 @@ import {
   PlugInIcon,
   TableIcon,
   UserCircleIcon,
-  EnvelopeIcon, 
-  
+  EnvelopeIcon,
+  BuildingIcon,
+  AssessmentIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import SidebarWidget from "./SidebarWidget";
@@ -49,9 +50,17 @@ const navItems: NavItem[] = [
     path: "/messaging",
   },
   {
-    icon: <PageIcon   />,
+    icon: <PageIcon />,
     name: "Offres de Stage",
     path: "/job-offers",
+  },
+  {
+    icon: <BuildingIcon />,
+    name: "Gestion Entreprise",
+    subItems: [
+      { name: "Offres", path: "/company-offers", pro: false },
+      { name: "Évaluations", path: "/student-evaluation", pro: false },
+    ],
   }
   // {
   //   name: "Forms",
