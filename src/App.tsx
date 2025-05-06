@@ -11,7 +11,7 @@ import Avatars from "./pages/UiElements/Avatars";
 import Buttons from "./pages/UiElements/Buttons";
 import LineChart from "./pages/Charts/LineChart";
 import BarChart from "./pages/Charts/BarChart";
-import Calendar from "./pages/Calendar";
+import Calendar from "./pages/Admin/Calendar";
 import BasicTables from "./pages/Tables/BasicTables";
 import FormElements from "./pages/Forms/FormElements";
 import Blank from "./pages/Blank";
@@ -20,60 +20,90 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import JobOffers from "./pages/JobOffers";
 import MessagingPage from "./components/Messaging/MessagingPage";
+<<<<<<< HEAD
 import CompanyOffers from "./pages/CompanyOffers";
 import StudentEvaluation from "./pages/StudentEvaluation";
+=======
+import Students from "./pages/Admin/Students";
+import Teachers from "./pages/Admin/Teachers";
+import Companies from "./pages/Admin/Companies";
+import AdminAppLayout from "./layout/Admin/AdminAppLayout";
+import AdminHome from "./pages/Dashboard/Admin/AdminHome";
+import Stages from "./pages/Admin/Stages";
+>>>>>>> 008f7bb02233d828738e06045c578dbb9a39a54a
 
 export default function App() {
-  return (
-    <>
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          {/* Dashboard Layout */}
-          <Route element={<AppLayout />}>
-            <Route path="/home" element={<Home />} />
-            {/* Others Page */}
-            <Route path="/profile" element={<UserProfiles />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/blank" element={<Blank />} />
-            <Route path="/messaging" element={<MessagingPage />} />
+    return (
+        <>
+            <Router>
+                <ScrollToTop />
+                <Routes>
+                    {/* Dashboard Layout */}
+                    <Route element={<AppLayout />}>
+                <Route path="/home" element={<Home />} />
+                {/* Others Page */}
+                <Route path="/profile" element={<UserProfiles />} />
+                <Route path="/calendar" element={<Calendar />} />
+                <Route path="/blank" element={<Blank />} />
+                <Route path="/messaging" element={<MessagingPage />} />
 
-            {/* Forms */}
-            <Route path="/form-elements" element={<FormElements />} />
+                {/* Forms */}
+                <Route path="/form-elements" element={<FormElements />} />
 
-            {/* Tables */}
-            <Route path="/basic-tables" element={<BasicTables />} />
+                {/* Tables */}
+                <Route path="/basic-tables" element={<BasicTables />} />
 
-            {/* Ui Elements */}
-            <Route path="/alerts" element={<Alerts />} />
-            <Route path="/avatars" element={<Avatars />} />
-            <Route path="/badge" element={<Badges />} />
-            <Route path="/buttons" element={<Buttons />} />
-            <Route path="/images" element={<Images />} />
-            <Route path="/videos" element={<Videos />} />
+                {/* Ui Elements */}
+                <Route path="/alerts" element={<Alerts />} />
+                <Route path="/avatars" element={<Avatars />} />
+                <Route path="/badge" element={<Badges />} />
+                <Route path="/buttons" element={<Buttons />} />
+                <Route path="/images" element={<Images />} />
+                <Route path="/videos" element={<Videos />} />
 
-            {/* Charts */}
-            <Route path="/line-chart" element={<LineChart />} />
-            <Route path="/bar-chart" element={<BarChart />} />
+                {/* Charts */}
+                <Route path="/line-chart" element={<LineChart />} />
+                <Route path="/bar-chart" element={<BarChart />} />
 
+<<<<<<< HEAD
             {/* Job Offers */}
             <Route path="/job-offers" element={<JobOffers />} />
             
             {/* Company Management */}
             <Route path="/company-offers" element={<CompanyOffers />} />
             <Route path="/student-evaluation" element={<StudentEvaluation />} />
+=======
+                {/* Job Offers */}
+                <Route path="/job-offers" element={<JobOffers />} />
+>>>>>>> 008f7bb02233d828738e06045c578dbb9a39a54a
 
-            <Route path="/" element={<Home />} />
-          </Route>
+                <Route path="/" element={<Home />} />
+                    </Route>
 
-          {/* Auth Layout */} 
-          <Route index path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
+                    {/* Admin */}
+                    <Route path="/admin" element={<AdminAppLayout />}>
 
-          {/* Fallback Route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </>
-  );
+                        <Route path="/admin" element={<AdminHome />} />
+
+                        <Route path="/admin/students" element={<Students />} />
+                        <Route path="/admin/teachers" element={<Teachers />} />
+                        <Route path="/admin/companies" element={<Companies />} />
+
+                        <Route path="/admin/calendar" element={<Calendar />} />
+
+                        <Route path="/admin/stages" element={<Stages />} />
+
+
+                    </Route>
+
+                    {/* Auth Layout */}
+                    <Route index path="/signin" element={<SignIn />} />
+                    <Route path="/signup" element={<SignUp />} />
+
+                    {/* Fallback Route */}
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </Router>
+        </>
+    );
 }
