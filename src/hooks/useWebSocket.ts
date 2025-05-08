@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { WebSocketMessage } from '../components/Messaging/types';
+import { WebSocketMessage } from '../Student/components/Messaging/types';
 
 export function useWebSocket() {
   const [socket, setSocket] = useState<WebSocket | null>(null);

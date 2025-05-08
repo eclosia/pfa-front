@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
-import { FaHome, FaUser, FaCalendar, FaTable, FaChartLine, FaBriefcase, FaMousePointer, FaSearch, FaBuilding } from "react-icons/fa";
-import { MdOutlineImage, MdOutlineVideoLibrary, MdWorkOutline } from "react-icons/md";
-import { BsBell, BsPersonBadge } from "react-icons/bs";
+import { FaHome, FaUser, FaCalendar, FaChartLine, FaBuilding } from "react-icons/fa";
+import {  MdWorkOutline } from "react-icons/md";
+import { BsBell } from "react-icons/bs";
 
 const menuItems = [
   {
