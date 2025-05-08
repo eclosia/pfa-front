@@ -8,6 +8,8 @@ import StudentHome from "./Student/pages/StudentHome";
 import UserProfiles from "./Student/pages/UserProfiles";
 import MessagingPage from "./Student/pages/MessagingPage";
 import JobOffers from "./Student/pages/JobOffers";
+import CompanyOffers from "./Student/pages/CompanyOffers";
+import StudentEvaluation from "./Student/pages/StudentEvaluation";
 
 import AdminAppLayout from "./Admin/layout/AdminAppLayout";
 import AdminHome from "./Admin/pages/AdminHome";
@@ -20,15 +22,6 @@ import Stages from "./Admin/pages/Stages";
 import NotFound from "./pages/OtherPage/NotFound";
 
 import { ScrollToTop } from "./components/common/ScrollToTop";
-import Home from "./pages/Dashboard/Home";
-import JobOffers from "./pages/JobOffers";
-import MessagingPage from "./components/Messaging/MessagingPage";
-import Students from "./pages/Admin/Students";
-import Teachers from "./pages/Admin/Teachers";
-import Companies from "./pages/Admin/Companies";
-import AdminAppLayout from "./layout/Admin/AdminAppLayout";
-import AdminHome from "./pages/Dashboard/Admin/AdminHome";
-import Stages from "./pages/Admin/Stages";
 
 export default function App() {
     return (
@@ -45,36 +38,14 @@ export default function App() {
 
                         <Route path="/messaging" element={<MessagingPage />} />
 
-                {/* Forms */}
-                <Route path="/form-elements" element={<FormElements />} />
-
-                {/* Tables */}
-                <Route path="/basic-tables" element={<BasicTables />} />
-
-                {/* Ui Elements */}
-                <Route path="/alerts" element={<Alerts />} />
-                <Route path="/avatars" element={<Avatars />} />
-                <Route path="/badge" element={<Badges />} />
-                <Route path="/buttons" element={<Buttons />} />
-                <Route path="/images" element={<Images />} />
-                <Route path="/videos" element={<Videos />} />
-
-                {/* Charts */}
-                <Route path="/line-chart" element={<LineChart />} />
-                <Route path="/bar-chart" element={<BarChart />} />
-
-<<<<<<< HEAD
-            {/* Job Offers */}
-            <Route path="/job-offers" element={<JobOffers />} />
-            
-            {/* Company Management */}
-            <Route path="/company-offers" element={<CompanyOffers />} />
-            <Route path="/student-evaluation" element={<StudentEvaluation />} />
-=======
+                
                         {/* Job Offers */}
                         <Route path="/job-offers" element={<JobOffers />} />
->>>>>>> 008f7bb02233d828738e06045c578dbb9a39a54a
-
+                        
+                        {/* Company Management */}
+                        <Route path="/company-offers" element={<CompanyOffers />} />
+                        <Route path="/student-evaluation" element={<StudentEvaluation />} />
+                        
                     </Route>
 
                     {/* Admin */}
