@@ -18,6 +18,25 @@ import Teachers from "./Admin/pages/Teachers";
 import Companies from "./Admin/pages/Companies";
 import Calendar from "./Admin/pages/Calendar";
 import Stages from "./Admin/pages/Stages";
+import AddTeacher from "./Admin/pages/AddTeacher";
+import AddEntreprise from "./Admin/pages/AddEntreprise";
+import AdminProfile from "./Admin/pages/AdminProfile";
+
+import TeacherAppLayout from "./Teacher/layout/TeacherAppLayout";
+import TeacherHome from "./Teacher/pages/TeacherHome"; 
+import MyStudents from "./Teacher/pages/MyStudents"; 
+import MyCalendar from "./Teacher/pages/MyCalendar";
+import ProjectsStudents from "./Teacher/pages/ProjectsStudents";
+import Soutenances from "./Teacher/pages/Soutenances";
+import Evaluations from "./Teacher/pages/Evaluations";
+import ProfileTeacher from "./Teacher/pages/ProfileTeacher";
+import MessagingPageTeacher from "./Teacher/pages/MessagingPageTeacher";
+
+
+
+import AddOffreStage from "./Entreprise/pages/AddOffreStage";
+import EntrepriseHome from "./Entreprise/pages/EntrepriseHome";
+
 
 import NotFound from "./pages/OtherPage/NotFound";
 
@@ -56,13 +75,36 @@ export default function App() {
                         <Route path="/admin/students" element={<Students />} />
                         <Route path="/admin/teachers" element={<Teachers />} />
                         <Route path="/admin/companies" element={<Companies />} />
+                        <Route path="/admin/AdminProfile" element={<AdminProfile />} />
 
                         <Route path="/admin/calendar" element={<Calendar />} />
 
                         <Route path="/admin/stages" element={<Stages />} />
 
+                        <Route path="/admin/AddTeacher" element={<AddTeacher />} />
+                        <Route path="/admin/AddEntreprise" element={<AddEntreprise />} />
+
 
                     </Route>
+
+
+                    <Route path="/teacher" element={<TeacherAppLayout />}>
+                        <Route path="/teacher" element={<TeacherHome />} /> 
+                        <Route path="/teacher/calendar" element={<MyCalendar />} />
+                        <Route path="/teacher/students" element={<MyStudents />} />
+                        <Route path="/teacher/ProjectsStudents" element={<ProjectsStudents />} />
+                        <Route path="/teacher/Soutenances" element={<Soutenances />} />
+                        <Route path="/teacher/Evaluations" element={<Evaluations />} />
+                        <Route path="/teacher/ProfileTeacher" element={<ProfileTeacher />} />
+                        <Route path="/teacher/MessagingPageTeacher" element={<MessagingPageTeacher />} />  
+                    </Route>
+
+
+                    <Route path="/entreprise" element={<EntrepriseHome />}>
+                    <Route path="/entreprise" element={<EntrepriseHome />} />  
+                        <Route path="/entreprise/AddOffreStage" element={<AddOffreStage />} />   
+                    </Route>
+
 
                     {/* Auth Layout */}
                     <Route index path="/signin" element={<SignIn />} />
