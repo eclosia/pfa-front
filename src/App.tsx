@@ -32,11 +32,7 @@ import Evaluations from "./Teacher/pages/Evaluations";
 import ProfileTeacher from "./Teacher/pages/ProfileTeacher";
 import MessagingPageTeacher from "./Teacher/pages/MessagingPageTeacher";
 
-
-
-import AddOffreStage from "./Entreprise/pages/AddOffreStage";
-import EntrepriseHome from "./Entreprise/pages/EntrepriseHome";
-
+ 
 
 import NotFound from "./pages/OtherPage/NotFound";
 
@@ -99,11 +95,6 @@ export default function App() {
                         <Route path="/teacher/MessagingPageTeacher" element={<MessagingPageTeacher />} />  
                     </Route>
 
-
-                    <Route path="/entreprise" element={<EntrepriseHome />}>
-                    <Route path="/entreprise" element={<EntrepriseHome />} />  
-                        <Route path="/entreprise/AddOffreStage" element={<AddOffreStage />} />   
-                    </Route>
 
 
                     {/* Auth Layout */}
