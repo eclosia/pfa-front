@@ -1,16 +1,40 @@
-import { Outlet } from "react-router-dom";
-import AppSidebar from "./AppSidebar"; 
+import { SidebarProvider, useSidebar } from "../../context/SidebarContext";
 
-const TeacherAppLayout = () => {
+import { Outlet } from "react-router-dom";
+
+import AppHeader from "../../layout/AppHeader";
+import Backdrop from "../../layout/Backdrop";
+
+import AppSidebar from "./AppSidebar";
+
+const LayoutContent: React.FC = () => {
+  const { isExpanded, isHovered, isMobileOpen } = useSidebar();
+
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-      <AppSidebar />
-      <div className="flex-1 flex flex-col overflow-hidden"> 
-        <main className="flex-1 overflow-y-auto p-4 md:p-6">
+    <div className="min-h-screen xl:flex bg-gray-50 dark:bg-gray-900">
+      <div>
+        <AppSidebar />
+        <Backdrop />
+      </div>
+      <div
+        className={`flex-1 transition-all duration-300 ease-in-out ${
+          isExpanded || isHovered ? "lg:ml-[290px]" : "lg:ml-[90px]"
+        } ${isMobileOpen ? "ml-0" : ""}`}
+      >
+        <AppHeader />
+        <main className="p-4 mx-auto max-w-screen-2xl md:p-6">
           <Outlet />
         </main>
       </div>
     </div>
+  );
+};
+
+const TeacherAppLayout: React.FC = () => {
+  return (
+    <SidebarProvider>
+      <LayoutContent />
+    </SidebarProvider>
   );
 };
 
