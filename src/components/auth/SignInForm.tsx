@@ -32,7 +32,7 @@ export default function SignInForm() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Après connexion réussie
-      navigate("/Home");
+      navigate("/student");
     } catch (err) {
       setError("Échec de la connexion. Veuillez vérifier vos identifiants.");
     } finally {

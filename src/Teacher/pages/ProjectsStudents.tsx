@@ -7,10 +7,10 @@ export default function ProjectsStudents() {
 	return (
 		<>
 			<PageMeta
-				title="Students | Eclosia"
-				description="This is React.js Basic Tables Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+				title="Étudiants | Eclosia"
+				description="Ceci est la page du tableau de bord des étudiants pour TailAdmin - Template de tableau de bord React.js avec Tailwind CSS"
 			/>
-			<PageBreadcrumb pageTitle="Students" />
+			<PageBreadcrumb pageTitle="Étudiants" />
 			<div className="space-y-6">
 
 				<ProjectsStudentsTable />

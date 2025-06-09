@@ -6,8 +6,8 @@ export default function SignIn() {
   return (
     <>
       <PageMeta
-        title="React.js SignIn Dashboard | TailAdmin - Next.js Admin Dashboard Template"
-        description="This is React.js SignIn Tables Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+        title="Connexion | TailAdmin - Template de tableau de bord Next.js"
+        description="Page de connexion pour TailAdmin - Template de tableau de bord React.js avec Tailwind CSS"
       />
       <AuthLayout>
         <SignInForm />

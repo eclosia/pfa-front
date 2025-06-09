@@ -118,8 +118,8 @@ const Calendar: React.FC = () => {
     return (
         <>
             <PageMeta
-                title="React.js Calendar Dashboard | TailAdmin - Next.js Admin Dashboard Template"
-                description="This is React.js Calendar Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+                title="Tableau de bord Calendrier React.js | TailAdmin - Template de tableau de bord Next.js"
+                description="Ceci est la page du tableau de bord Calendrier React.js pour TailAdmin - Template de tableau de bord React.js avec Tailwind CSS"
             />
             <div className="rounded-2xl border  border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
                 <div className="custom-calendar">
@@ -153,18 +153,17 @@ const Calendar: React.FC = () => {
                     <div className="flex flex-col px-2 overflow-y-auto custom-scrollbar">
                         <div>
                             <h5 className="mb-2 font-semibold text-gray-800 modal-title text-theme-xl dark:text-white/90 lg:text-2xl">
-                                {selectedEvent ? "Edit Event" : "Add Event"}
+                                {selectedEvent ? "Modifier l'événement" : "Ajouter un événement"}
                             </h5>
                             <p className="text-sm text-gray-500 dark:text-gray-400">
-                                Plan your next big moment: schedule or edit an event to stay on
-                                track
+                                Planifiez votre prochain grand moment : programmez ou modifiez un événement pour rester sur la bonne voie
                             </p>
                         </div>
                         <div className="mt-8">
                             <div>
                                 <div>
                                     <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                        Event Title
+                                        Titre de l'événement
                                     </label>
                                     <input
                                         id="event-title"
@@ -177,7 +176,7 @@ const Calendar: React.FC = () => {
                             </div>
                             <div className="mt-6">
                                 <label className="block mb-4 text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Event Color
+                                    Couleur de l'événement
                                 </label>
                                 <div className="flex flex-wrap items-center gap-4 sm:gap-5">
                                     {Object.entries(calendarsEvents).map(([key, value]) => (
@@ -213,7 +212,7 @@ const Calendar: React.FC = () => {
 
                             <div className="mt-6">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Enter Start Date
+                                    Date de début
                                 </label>
                                 <div className="relative">
                                     <input
@@ -228,7 +227,7 @@ const Calendar: React.FC = () => {
 
                             <div className="mt-6">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Enter End Date
+                                    Date de fin
                                 </label>
                                 <div className="relative">
                                     <input
@@ -247,14 +246,14 @@ const Calendar: React.FC = () => {
                                 type="button"
                                 className="flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] sm:w-auto"
                             >
-                                Close
+                                Fermer
                             </button>
                             <button
                                 onClick={handleAddOrUpdateEvent}
                                 type="button"
                                 className="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto"
                             >
-                                {selectedEvent ? "Update Changes" : "Add Event"}
+                                {selectedEvent ? "Mettre à jour" : "Ajouter l'événement"}
                             </button>
                         </div>
                     </div>

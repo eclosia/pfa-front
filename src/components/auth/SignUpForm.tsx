@@ -34,7 +34,7 @@ export default function SignUpForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-    navigate("/Home");
+    navigate("/student");
   };
 
   const nextStep = () => {
@@ -276,7 +276,7 @@ export default function SignUpForm() {
       <div className="p-6 bg-white/50 dark:bg-gray-800/30 backdrop-blur-md rounded-xl border border-white/20 dark:border-gray-700/30">
         <div className="mb-8 text-center">
           <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
-            Inscription Étudiant
+            Inscription
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
             Remplissez les informations requises pour votre compte

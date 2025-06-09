@@ -304,6 +304,21 @@ const AppSidebar: React.FC = () => {
                 </nav>
                 {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
             </div>
+             
+            <div className="mt-auto mb-6 px-3">
+    <button
+        onClick={() => {
+            // TODO: Remplace ceci par ton système de logout
+            console.log("Déconnexion...");
+        }}
+        className="w-full rounded-lg bg-transparent px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:text-black border border-transparent transition-colors duration-200"
+    >
+        Déconnexion
+    </button>
+</div>
+
+
+
         </aside>
     );
 };
