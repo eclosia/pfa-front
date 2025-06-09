@@ -56,31 +56,31 @@ export default function App() {
                     {/* Redirection from root to /signin */}
                     <Route path="/" element={<Navigate to="/signin" replace />} />
 
-                     {/* Auth Layout */}
+                    {/* Auth Layout */}
                     <Route index path="/signin" element={<SignIn />} />
                     <Route path="/signup" element={<SignUp />} />
-                    
+
                     {/* Student Routes */}
                     <Route path="/student" element={
                         <RoleProtectedRoute requiredRole='student' >
-                             <StudentAppLayout />
+                            <StudentAppLayout />
                         </RoleProtectedRoute>
                     }>
 
                         <Route path="/student" element={<StudentHome />} />
 
-                        <Route path="/profile" element={<UserProfiles />} />
+                        <Route path="student/profile" element={<UserProfiles />} />
 
-                        <Route path="/messaging" element={<MessagingPage />} />
+                        <Route path="student/messaging" element={<MessagingPage />} />
 
-                
+
                         {/* Job Offers */}
-                        <Route path="/job-offers" element={<JobOffers />} />
-                        
+                        <Route path="student/job-offers" element={<JobOffers />} />
+
                         {/* Company Management */}
-                        <Route path="/company-offers" element={<CompanyOffers />} />
-                        <Route path="/student-evaluation" element={<StudentEvaluation />} />
-                        
+                        <Route path="student/company-offers" element={<CompanyOffers />} />
+                        <Route path="student/student-evaluation" element={<StudentEvaluation />} />
+
                     </Route>
 
                     {/* Admin Routes */}
@@ -101,36 +101,36 @@ export default function App() {
                         <Route path="AddEntreprise" element={<AddEntreprise />} />
                     </Route>
 
-                {/* Teacher Routes */}
-                <Route path="/teacher" element={
-                    <RoleProtectedRoute requiredRole='teacher' >
-                        <TeacherAppLayout />
-                    </RoleProtectedRoute>
-                }>
-                    <Route index element={<TeacherHome />} />
-                    <Route path="calendar" element={<MyCalendar />} />
-                    <Route path="students" element={<MyStudents />} />
-                    <Route path="projects-students" element={<ProjectsStudents />} />
-                    <Route path="soutenances" element={<Soutenances />} />
-                    <Route path="evaluations" element={<Evaluations />} />
-                    <Route path="profile" element={<ProfileTeacher />} />
-                    <Route path="messages" element={<MessagingPageTeacher />} />
-                    {/* Ajoute cette route si tu veux une page stats */}
-                    <Route path="stats" element={<div>Statistiques (à implémenter)</div>} />
-                </Route>
+                    {/* Teacher Routes */}
+                    <Route path="/teacher" element={
+                        <RoleProtectedRoute requiredRole='teacher' >
+                            <TeacherAppLayout />
+                        </RoleProtectedRoute>
+                    }>
+                        <Route index element={<TeacherHome />} />
+                        <Route path="calendar" element={<MyCalendar />} />
+                        <Route path="students" element={<MyStudents />} />
+                        <Route path="projects-students" element={<ProjectsStudents />} />
+                        <Route path="soutenances" element={<Soutenances />} />
+                        <Route path="evaluations" element={<Evaluations />} />
+                        <Route path="profile" element={<ProfileTeacher />} />
+                        <Route path="messages" element={<MessagingPageTeacher />} />
+                        {/* Ajoute cette route si tu veux une page stats */}
+                        <Route path="stats" element={<div>Statistiques (à implémenter)</div>} />
+                    </Route>
 
-                {/* Entreprise Routes */}
-                <Route path="/entreprise" element={
-                    <RoleProtectedRoute requiredRole='entreprise' >
-                        <EntrepriseAppLayout />
-                    </RoleProtectedRoute>
-                }>
-                    <Route index element={<AddOffreStage />} />
-                    <Route path="AddOffreStage" element={<AddOffreStage />} />
-                </Route>
+                    {/* Entreprise Routes */}
+                    <Route path="/entreprise" element={
+                        <RoleProtectedRoute requiredRole='entreprise' >
+                            <EntrepriseAppLayout />
+                        </RoleProtectedRoute>
+                    }>
+                        <Route index element={<AddOffreStage />} />
+                        <Route path="AddOffreStage" element={<AddOffreStage />} />
+                    </Route>
 
-                {/* Fallback Route */}
-                <Route path="*" element={<NotFound />} />
+                    {/* Fallback Route */}
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </Router>
         </AuthProvider>
