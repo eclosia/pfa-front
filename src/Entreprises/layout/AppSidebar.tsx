@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
+
+// Assume these icons are imported from an icon library
 import {
     CalenderIcon,
     ChevronDownIcon,
@@ -7,18 +9,17 @@ import {
     HorizontaLDots,
     GroupIcon
 } from "../../icons";
+
 import { useSidebar } from "../../context/SidebarContext";
 import SidebarWidget from "../../layout/SidebarWidget";
 import { ListCheckIcon } from "lucide-react";
-import { BriefcaseIcon } from "lucide-react"; 
-// ✅ Nouvel icône
+
 type NavItem = {
     name: string;
     icon: React.ReactNode;
     path?: string;
     subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
 };
- 
 
 const navItems: NavItem[] = [
     {
@@ -30,41 +31,39 @@ const navItems: NavItem[] = [
         name: "Users",
         icon: <GroupIcon />,
         subItems: [
-            { name: "Students", path: "/admin/students" },
-            { name: "Teachers", path: "/admin/teachers" },
-            { name: "Companies", path: "/admin/companies" }
+            { name: "Students", path: "/admin/students", pro: false },
+            { name: "Teachers", path: "/admin/teachers", pro: false },
+            { name: "Companies", path: "/admin/companies", pro: false }
         ]
     },
     {
         icon: <CalenderIcon />,
         name: "Calendar",
-        path: "/admin/calendar"
+        path: "/admin/calendar",
     },
     {
-        icon: <BriefcaseIcon className="w-5 h-5" />, // ✅ Icône unique pour Stages
+        icon: <ListCheckIcon />,
         name: "Stages",
-        path: "/admin/stages"
-    },
-    {
-        icon: <ListCheckIcon />, // tu peux aussi le changer si nécessaire
-        name: "Ajouter",
-        subItems: [
-            { name: "Ajouter un enseignant", path: "/admin/addTeacher" },
-            { name: "Ajouter une entreprise", path: "/admin/addentreprise" }
-        ]
+        path: "/admin/stages",
     }
+
 ];
 
 const AppSidebar: React.FC = () => {
+    
     const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
     const location = useLocation();
+
     const [openSubmenu, setOpenSubmenu] = useState<{
         type: "main" | "others";
         index: number;
     } | null>(null);
-    const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>({});
+    const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
+        {}
+    );
     const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
+    // const isActive = (path: string) => location.pathname === path;
     const isActive = useCallback(
         (path: string) => location.pathname === path,
         [location.pathname]
@@ -73,7 +72,8 @@ const AppSidebar: React.FC = () => {
     useEffect(() => {
         let submenuMatched = false;
         ["main", "others"].forEach((menuType) => {
-            navItems.forEach((nav, index) => {
+            const items =  navItems ;
+            items.forEach((nav, index) => {
                 if (nav.subItems) {
                     nav.subItems.forEach((subItem) => {
                         if (isActive(subItem.path)) {
@@ -87,7 +87,10 @@ const AppSidebar: React.FC = () => {
                 }
             });
         });
-        if (!submenuMatched) setOpenSubmenu(null);
+
+        if (!submenuMatched) {
+            setOpenSubmenu(null);
+        }
     }, [location, isActive]);
 
     useEffect(() => {
@@ -103,11 +106,16 @@ const AppSidebar: React.FC = () => {
     }, [openSubmenu]);
 
     const handleSubmenuToggle = (index: number, menuType: "main" | "others") => {
-        setOpenSubmenu((prev) =>
-            prev?.type === menuType && prev.index === index
-                ? null
-                : { type: menuType, index }
-        );
+        setOpenSubmenu((prevOpenSubmenu) => {
+            if (
+                prevOpenSubmenu &&
+                prevOpenSubmenu.type === menuType &&
+                prevOpenSubmenu.index === index
+            ) {
+                return null;
+            }
+            return { type: menuType, index };
+        });
     };
 
     const renderMenuItems = (items: NavItem[], menuType: "main" | "others") => (
@@ -126,7 +134,7 @@ const AppSidebar: React.FC = () => {
                                 }`}
                         >
                             <span
-                                className={`menu-item-icon-size ${openSubmenu?.type === menuType && openSubmenu?.index === index
+                                className={`menu-item-icon-size  ${openSubmenu?.type === menuType && openSubmenu?.index === index
                                     ? "menu-item-icon-active"
                                     : "menu-item-icon-inactive"
                                     }`}
@@ -227,14 +235,14 @@ const AppSidebar: React.FC = () => {
     return (
         <aside
             className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
-            ${isExpanded || isMobileOpen
+        ${isExpanded || isMobileOpen
                     ? "w-[290px]"
                     : isHovered
                         ? "w-[290px]"
                         : "w-[90px]"
                 }
-            ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
-            lg:translate-x-0`}
+        ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
+        lg:translate-x-0`}
             onMouseEnter={() => !isExpanded && setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
@@ -242,7 +250,7 @@ const AppSidebar: React.FC = () => {
                 className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
                     }`}
             >
-                <Link to="/admin">
+                <Link to="/">
                     {isExpanded || isHovered || isMobileOpen ? (
                         <>
                             <img
@@ -287,6 +295,10 @@ const AppSidebar: React.FC = () => {
                                 )}
                             </h2>
                             {renderMenuItems(navItems, "main")}
+                        </div>
+                        <div className="">
+                            
+                            
                         </div>
                     </div>
                 </nav>

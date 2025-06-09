@@ -1,3 +1,5 @@
+import React from "react";
+
 interface AvatarProps {
   src: string; // URL of the avatar image
   alt?: string; // Alt text for the avatar
@@ -36,9 +38,17 @@ const Avatar: React.FC<AvatarProps> = ({
   status = "none",
 }) => {
   return (
-    <div className={`relative  rounded-full ${sizeClasses[size]}`}>
+    <div
+      className={`relative rounded-full overflow-hidden inline-block ${sizeClasses[size]}`}
+      style={{ minWidth: sizeClasses[size].split(" ")[1].replace("w-", "") }}
+    >
       {/* Avatar Image */}
-      <img src={src} alt={alt} className="object-cover rounded-full" />
+      <img
+        src={src}
+        alt={alt}
+        className="object-cover rounded-full w-full h-full select-none"
+        draggable={false}
+      />
 
       {/* Status Indicator */}
       {status !== "none" && (
@@ -46,7 +56,8 @@ const Avatar: React.FC<AvatarProps> = ({
           className={`absolute bottom-0 right-0 rounded-full border-[1.5px] border-white dark:border-gray-900 ${
             statusSizeClasses[size]
           } ${statusColorClasses[status] || ""}`}
-        ></span>
+          aria-label={`User is ${status}`}
+        />
       )}
     </div>
   );

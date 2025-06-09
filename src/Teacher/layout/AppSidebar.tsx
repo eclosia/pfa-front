@@ -1,56 +1,82 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
-// Icônes
 import {
-  ChevronDownIcon,
-  HorizontaLDots,
-  PageIcon,
-  UserCircleIcon,
-  EnvelopeIcon,
-  BuildingIcon
-} from "../../icons";
-
-import { useSidebar } from "../../context/SidebarContext";
+  LayoutDashboard,
+  Users,
+  NotebookText,
+  CalendarDays,
+  ClipboardList,
+  FileText,
+  BarChart2,
+  MessageSquare,
+  ChevronDown,
+  MoreHorizontal
+} from "lucide-react";
 
 type NavItem = {
   name: string;
   icon: React.ReactNode;
   path?: string;
-  subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+  subItems?: { name: string; path: string; badge?: number }[];
 };
 
 const navItems: NavItem[] = [
   {
-    icon: <UserCircleIcon />,
-    name: "Profil Utilisateur",
-    path: "/student/profile",
+    icon: <LayoutDashboard size={18} />,
+    name: "Tableau de bord",
+    path: "/teacher"
   },
   {
-    icon: <EnvelopeIcon />,
-    name: "Messagerie",
-    path: "/student/messaging",
-  },
-  {
-    icon: <PageIcon />,
-    name: "Offres de Stage",
-    path: "/student/job-offers",
-  },
-  {
-    icon: <BuildingIcon />,
-    name: "Gestion Entreprise",
+    icon: <Users size={18} />,
+    name: "Mes Étudiants",
     subItems: [
-      { name: "Offres", path: "/student/company-offers" },
-      { name: "Évaluations", path: "/student/student-evaluation" },
-    ],
+      { name: "Liste des étudiants", path: "/teacher/students" },
+      { name: "Fiches projets", path: "/teacher/projects-students", badge: 3 }
+    ]
+  },
+  {
+    icon: <NotebookText size={18} />,
+    name: "Projets",
+    subItems: [
+      { name: "Tous les projets", path: "/teacher/projects-students" },
+      { name: "À valider", path: "/teacher/projects-students", badge: 2 },
+      { name: "En cours", path: "/teacher/projects-students" }
+    ]
+  },
+  {
+    icon: <CalendarDays size={18} />,
+    name: "Calendrier",
+    path: "/teacher/calendar"
+  },
+  {
+    icon: <ClipboardList size={18} />,
+    name: "Soutenances",
+    path: "/teacher/soutenances"
+  },
+  {
+    icon: <FileText size={18} />,
+    name: "Évaluations",
+    path: "/teacher/evaluations"
+  },
+  {
+    icon: <BarChart2 size={18} />,
+    name: "Statistiques",
+    path: "/teacher/stats"
+  },
+  {
+    icon: <MessageSquare size={18} />,
+    name: "Messagerie",
+    path: "/teacher/messages"
   }
 ];
 
 const AppSidebar: React.FC = () => {
-  const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [isExpanded, setIsExpanded] = useState(true);
+  const [isMobileOpen, setIsMobileOpen] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<{
     type: "main" | "";
     index: number;
@@ -59,7 +85,7 @@ const AppSidebar: React.FC = () => {
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const isActive = useCallback(
-    (path: string) => location.pathname === path,
+    (path: string) => location.pathname.startsWith(path),
     [location.pathname]
   );
 
@@ -104,7 +130,7 @@ const AppSidebar: React.FC = () => {
 
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    navigate("/student");
+    navigate("/teacher");
   };
 
   const renderMenuItems = () => (
@@ -129,7 +155,7 @@ const AppSidebar: React.FC = () => {
                 <span className="ml-3">{nav.name}</span>
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
-                <ChevronDownIcon
+                <ChevronDown
                   className={`ml-auto w-5 h-5 transition-transform ${
                     openSubmenu?.index === index ? "rotate-180" : ""
                   }`}
@@ -179,7 +205,14 @@ const AppSidebar: React.FC = () => {
                           : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                       }`}
                     >
-                      {subItem.name}
+                      <div className="flex items-center justify-between">
+                        <span>{subItem.name}</span>
+                        {subItem.badge && (
+                          <span className="ml-2 bg-blue-300 text-blue-900 text-xs px-2 rounded-full dark:bg-blue-900 dark:text-blue-200">
+                            {subItem.badge}
+                          </span>
+                        )}
+                      </div>
                     </Link>
                   </li>
                 ))}
@@ -249,9 +282,9 @@ const AppSidebar: React.FC = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
+                  "Navigation"
                 ) : (
-                  <HorizontaLDots className="size-6" />
+                  <MoreHorizontal className="size-6" />
                 )}
               </h2>
               {renderMenuItems()}
