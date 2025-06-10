@@ -24,6 +24,7 @@ import Stages from "./Admin/pages/Stages";
 import AddTeacher from "./Admin/pages/AddTeacher";
 import AddEntreprise from "./Admin/pages/AddEntreprise";
 import AdminProfile from "./Admin/pages/AdminProfile";
+import AffectationForm from "./Admin/pages/AffectationForm";
 
 // Teacher Components
 import TeacherAppLayout from "./Teacher/layout/TeacherAppLayout";
@@ -78,6 +79,7 @@ export default function App() {
                     <Route path="stages" element={<Stages />} />
                     <Route path="AddTeacher" element={<AddTeacher />} />
                     <Route path="AddEntreprise" element={<AddEntreprise />} />
+                    <Route path="AffectationForm" element={<AffectationForm />} />
                 </Route>
 
                 {/* Teacher Routes */}

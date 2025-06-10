@@ -120,12 +120,12 @@ const pfaProgress = [
         status: "En cours",
         color: "bg-blue-500",
     },
-    {
-        title: "Implémentation",
-        progress: 50,
-        status: "En cours",
-        color: "bg-indigo-500",
-    },
+    // {
+    //     title: "Implémentation",
+    //     progress: 50,
+    //     status: "En cours",
+    //     color: "bg-indigo-500",
+    // },
     {
         title: "Rédaction Rapport",
         progress: 30,
@@ -179,7 +179,7 @@ export default function StudentHome() {
             </div>
 
             {/* Statistiques */}
-            <div className="flex justify-center w-full">
+            {/* <div className="flex justify-center w-full">
                 <div className="grid w-full max-w-screen-lg grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {statsData.map((stat, i) => (
                         <div key={i} className={`rounded-xl ${stat.bgColor} p-6 shadow-lg transition-transform hover:scale-105 dark:shadow-none`}>
@@ -196,7 +196,7 @@ export default function StudentHome() {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div> */}
 
             {/* Graphiques & Événements */}
             <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">

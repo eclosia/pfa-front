@@ -7,8 +7,13 @@ import {
     ChevronDownIcon,
     GridIcon,
     HorizontaLDots,
-    GroupIcon
+    GroupIcon,
+    PageIcon,
+    UserCircleIcon,
+    EnvelopeIcon,
+    BuildingIcon
 } from "../../icons";
+ 
 
 import { useSidebar } from "../../context/SidebarContext";
 import SidebarWidget from "../../layout/SidebarWidget";
@@ -24,33 +29,38 @@ type NavItem = {
 const navItems: NavItem[] = [
     {
         icon: <GridIcon />,
-        name: "Dashboard",
-        path: "/admin"
+        name: "Tableau de bord ",
+        path: "/entreprise"
     },
-    {
-        name: "Users",
-        icon: <GroupIcon />,
-        subItems: [
-            { name: "Students", path: "/admin/students", pro: false },
-            { name: "Teachers", path: "/admin/teachers", pro: false },
-            { name: "Companies", path: "/admin/companies", pro: false }
-        ]
-    },
-    {
-        icon: <CalenderIcon />,
-        name: "Calendar",
-        path: "/admin/calendar",
-    },
+    // {
+    //     name: "Users",
+    //     icon: <GroupIcon />,
+    //     subItems: [
+    //         { name: "Students", path: "/admin/students", pro: false },
+    //         { name: "Teachers", path: "/admin/teachers", pro: false },
+    //         { name: "Companies", path: "/admin/companies", pro: false }
+    //     ]
+    // },
+    // {
+    //     icon: <CalenderIcon />,
+    //     name: "Calendar",
+    //     path: "/admin/calendar",
+    // },
     {
         icon: <ListCheckIcon />,
+        name: "Ajouter une offre",
+        path: "/entreprise/addOffreStage",
+    },
+    {
+        icon: <PageIcon />,
         name: "Stages",
-        path: "/admin/stages",
+        path: "/student/job-offers",
     }
 
 ];
 
 const AppSidebar: React.FC = () => {
-    
+
     const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
     const location = useLocation();
 
@@ -72,7 +82,7 @@ const AppSidebar: React.FC = () => {
     useEffect(() => {
         let submenuMatched = false;
         ["main", "others"].forEach((menuType) => {
-            const items =  navItems ;
+            const items = navItems;
             items.forEach((nav, index) => {
                 if (nav.subItems) {
                     nav.subItems.forEach((subItem) => {
@@ -297,25 +307,25 @@ const AppSidebar: React.FC = () => {
                             {renderMenuItems(navItems, "main")}
                         </div>
                         <div className="">
-                            
-                            
+
+
                         </div>
                     </div>
                 </nav>
                 {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
             </div>
-             
+
             <div className="mt-auto mb-6 px-3">
-    <button
-        onClick={() => {
-            // TODO: Remplace ceci par ton système de logout
-            console.log("Déconnexion...");
-        }}
-        className="w-full rounded-lg bg-transparent px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:text-black border border-transparent transition-colors duration-200"
-    >
-        Déconnexion
-    </button>
-</div>
+                <button
+                    onClick={() => {
+                        // TODO: Remplace ceci par ton système de logout
+                        console.log("Déconnexion...");
+                    }}
+                    className="w-full rounded-lg bg-transparent px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:text-black border border-transparent transition-colors duration-200"
+                >
+                    Déconnexion
+                </button>
+            </div>
 
 
 

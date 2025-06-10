@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
+import { PuzzleIcon } from "lucide-react";
+
 import {
     CalenderIcon,
     ChevronDownIcon,
@@ -10,7 +12,7 @@ import {
 import { useSidebar } from "../../context/SidebarContext";
 import SidebarWidget from "../../layout/SidebarWidget";
 import { ListCheckIcon } from "lucide-react";
-import { BriefcaseIcon } from "lucide-react"; 
+import { BriefcaseIcon } from "lucide-react";
 // ✅ Nouvel icône
 type NavItem = {
     name: string;
@@ -18,26 +20,26 @@ type NavItem = {
     path?: string;
     subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
 };
- 
+
 
 const navItems: NavItem[] = [
     {
         icon: <GridIcon />,
-        name: "Dashboard",
+        name: "Tableau de bord ",
         path: "/admin"
     },
     {
-        name: "Users",
+        name: "Utilisateurs ",
         icon: <GroupIcon />,
         subItems: [
-            { name: "Students", path: "/admin/students" },
-            { name: "Teachers", path: "/admin/teachers" },
-            { name: "Companies", path: "/admin/companies" }
+            { name: "Étudiants ", path: "/admin/students" },
+            { name: "Professeurs ", path: "/admin/teachers" },
+            { name: "Entreprises ", path: "/admin/companies" }
         ]
     },
     {
         icon: <CalenderIcon />,
-        name: "Calendar",
+        name: "Calendrier ",
         path: "/admin/calendar"
     },
     {
@@ -46,13 +48,19 @@ const navItems: NavItem[] = [
         path: "/admin/stages"
     },
     {
-        icon: <ListCheckIcon />, // tu peux aussi le changer si nécessaire
-        name: "Ajouter",
-        subItems: [
-            { name: "Ajouter un enseignant", path: "/admin/addTeacher" },
-            { name: "Ajouter une entreprise", path: "/admin/addentreprise" }
-        ]
-    }
+        icon: <PuzzleIcon className="w-5 h-5" />,
+        name: "Affectations",
+        path: "/admin/AffectationForm"
+    },
+    
+    // {
+    //     icon: <ListCheckIcon />, // tu peux aussi le changer si nécessaire
+    //     name: "Ajouter",
+    //     subItems: [
+    //         { name: "Ajouter un enseignant", path: "/admin/addTeacher" },
+    //         { name: "Ajouter une entreprise", path: "/admin/addentreprise" }
+    //     ]
+    // }
 ];
 
 const AppSidebar: React.FC = () => {
@@ -293,16 +301,16 @@ const AppSidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
             </div>
             <div className="mt-auto mb-6 px-3">
-    <button
-        onClick={() => {
-            // TODO: Remplace ceci par ton système de logout
-            console.log("Déconnexion...");
-        }}
-        className="w-full rounded-lg bg-transparent px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:text-black border border-transparent transition-colors duration-200"
-    >
-        Déconnexion
-    </button>
-</div>
+                <button
+                    onClick={() => {
+                        // TODO: Remplace ceci par ton système de logout
+                        console.log("Déconnexion...");
+                    }}
+                    className="w-full rounded-lg bg-transparent px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:text-black border border-transparent transition-colors duration-200"
+                >
+                    Déconnexion
+                </button>
+            </div>
 
         </aside>
     );

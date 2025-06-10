@@ -18,6 +18,8 @@ import Button from "../../../components/ui/button/Button";
 import { useModal } from "../../../hooks/useModal";
 import Input from "../../../components/form/input/InputField";
 import Label from "../../../components/form/Label";
+import Select from "../../../components/form/Select";
+import Badge from "../../../components/ui/badge/Badge";
 
 interface StudentProject {
   id: number;
@@ -70,7 +72,7 @@ const projectsData: StudentProject[] = [
       firstName: "Achraf",
       lastName: "ABATTOUY",
       apogee: "2256346",
-      filiere: "GSTR"
+      filiere: "GINF"
     },
     projectTitle: "Plateforme e-learning intelligente",
     status: "À corriger",
@@ -95,11 +97,14 @@ const projectsData: StudentProject[] = [
 
 export default function ProjectsStudentsTable() {
   const { isOpen: isMeetingModalOpen, openModal: openMeetingModal, closeModal: closeMeetingModal } = useModal();
+  const { isOpen: isEditModalOpen, openModal: openEditModal, closeModal: closeEditModal } = useModal();
   const [selectedStudent, setSelectedStudent] = useState<StudentProject | null>(null);
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingTime, setMeetingTime] = useState("");
   const [meetingMode, setMeetingMode] = useState("En présentiel");
   const [meetingObjective, setMeetingObjective] = useState("");
+  const [projects, setProjects] = useState<StudentProject[]>(projectsData);
+  const [editedProject, setEditedProject] = useState<StudentProject | null>(null);
 
   const handleScheduleMeeting = (student: StudentProject) => {
     setSelectedStudent(student);
@@ -122,15 +127,41 @@ export default function ProjectsStudentsTable() {
     setMeetingObjective("");
   };
 
+  const handleEditProject = (project: StudentProject) => {
+    setEditedProject(project);
+    openEditModal();
+  };
+
+  const handleUpdateProject = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editedProject) {
+      setProjects(projects.map(p => 
+        p.id === editedProject.id ? editedProject : p
+      ));
+      closeEditModal();
+      setEditedProject(null);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    if (editedProject) {
+      const { name, value } = e.target;
+      setEditedProject({
+        ...editedProject,
+        [name]: value
+      });
+    }
+  };
+
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="flex justify-end p-4 gap-2">
-        <Button size="sm" startIcon={<FiPlus className="size-5" />}>
+        {/* <Button size="sm" startIcon={<FiPlus className="size-5" />}>
           Nouveau Projet
-        </Button>
-        <Button size="sm" startIcon={<FiFile className="size-5" />}>
+        </Button> */}
+        {/* <Button size="sm" startIcon={<FiFile className="size-5" />}>
           Exporter
-        </Button>
+        </Button> */}
       </div>
 
       <div className="max-w-full overflow-x-auto">
@@ -160,7 +191,7 @@ export default function ProjectsStudentsTable() {
             </TableHeader>
 
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {projectsData.map((project) => (
+              {projects.map((project) => (
                 <TableRow key={project.id}>
                   <TableCell className="px-5 py-4 sm:px-6 text-start">
                     <div className="flex items-center gap-3">
@@ -193,22 +224,40 @@ export default function ProjectsStudentsTable() {
                   </TableCell>
 
                   <TableCell className="px-4 py-3 text-start">
-                    <div className="flex items-center gap-2">
-                      <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div 
-                          className={`h-2.5 rounded-full ${
-                            project.progress < 50 ? 'bg-red-500' : 
-                            project.progress < 80 ? 'bg-yellow-500' : 'bg-green-500'
-                          }`} 
-                          style={{ width: `${project.progress}%` }}
-                        ></div>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-full bg-gray-200 rounded-full h-2.5">
+                          <div 
+                            className={`h-2.5 rounded-full ${
+                              project.progress < 50 ? 'bg-red-500' : 
+                              project.progress < 80 ? 'bg-yellow-500' : 'bg-green-500'
+                            }`} 
+                            style={{ width: `${project.progress}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-sm text-gray-500">{project.progress}%</span>
                       </div>
-                      <span className="text-sm text-gray-500">{project.progress}%</span>
+                      <Badge 
+                        variant="light" 
+                        color={
+                          project.status === "Validé" ? "success" : 
+                          project.status === "À corriger" ? "error" : "warning"
+                        }
+                      >
+                        {project.status}
+                      </Badge>
                     </div>
                   </TableCell>
 
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {project.lastMeeting || "Aucune"}
+                    {project.lastMeeting ? (
+                      <div className="flex items-center gap-2">
+                        <FiCalendar className="text-gray-400" />
+                        <span>{project.lastMeeting}</span>
+                      </div>
+                    ) : (
+                      <span className="text-gray-400">Aucune</span>
+                    )}
                   </TableCell>
 
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
@@ -225,6 +274,7 @@ export default function ProjectsStudentsTable() {
                         size="sm"
                         variant="outline"
                         startIcon={<FiEdit className="size-5" />}
+                        onClick={() => handleEditProject(project)}
                       >
                         Modifier
                       </Button>
@@ -316,6 +366,75 @@ export default function ProjectsStudentsTable() {
                   </Button>
                 </div>
               </form>
+            </div>
+          </Modal>
+
+          {/* Edit Project Modal */}
+          <Modal isOpen={isEditModalOpen} onClose={closeEditModal} className="max-w-[500px] m-4">
+            <div className="no-scrollbar relative w-full max-w-[500px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-8">
+              <div className="px-2">
+                <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
+                  Modifier le projet
+                </h4>
+                <form onSubmit={handleUpdateProject} className="space-y-4">
+                  <div>
+                    <Label htmlFor="projectTitle">Titre du projet</Label>
+                    <Input
+                      id="projectTitle"
+                      name="projectTitle"
+                      value={editedProject?.projectTitle || ''}
+                      onChange={handleInputChange}
+                      placeholder="Titre du projet"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="status">Statut</Label>
+                    <Select
+                      options={[
+                        { value: "En cours", label: "En cours" },
+                        { value: "Validé", label: "Validé" },
+                        { value: "À corriger", label: "À corriger" }
+                      ]}
+                      defaultValue={editedProject?.status || "En cours"}
+                      onChange={(value) => handleInputChange({ target: { name: 'status', value } } as any)}
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="progress">Avancement (%)</Label>
+                    <Input
+                      id="progress"
+                      name="progress"
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={editedProject?.progress || 0}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="lastMeeting">Dernière réunion</Label>
+                    <Input
+                      id="lastMeeting"
+                      name="lastMeeting"
+                      type="date"
+                      value={editedProject?.lastMeeting || ''}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <div className="flex justify-end gap-2 mt-6">
+                    <Button variant="outline" onClick={closeEditModal}>
+                      Annuler
+                    </Button>
+                    <Button onClick={() => handleUpdateProject({ preventDefault: () => {} } as any)}>
+                      Enregistrer
+                    </Button>
+                  </div>
+                </form>
+              </div>
             </div>
           </Modal>
         </div>

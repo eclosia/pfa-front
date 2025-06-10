@@ -6,8 +6,8 @@ export default function SignUp() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900/30 via-gray-900/30 to-purple-900/30 dark:from-blue-900/20 dark:via-gray-900/20 dark:to-purple-900/20 backdrop-blur-md">
       <PageMeta
-        title="Inscription | TailAdmin - Template de tableau de bord Next.js"
-        description="Page d'inscription pour TailAdmin - Template de tableau de bord React.js avec Tailwind CSS"
+        title="React.js SignUp Dashboard | TailAdmin - Next.js Admin Dashboard Template"
+        description="This is React.js SignUp Tables Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
       />
       <AuthLayout>
         <SignUpForm />

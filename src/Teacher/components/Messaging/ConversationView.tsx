@@ -98,7 +98,8 @@ export default function ConversationView({
                         onClick={onRequestAppointment}
                         className="bg-blue-500 hover:bg-blue-600 text-white" // TODO: change for light mode
                     >
-                        Demander un rendez-vous
+                                  Planifier un rendez-vous
+
                     </Button>
                 </div>
             </div>

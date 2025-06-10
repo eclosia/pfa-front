@@ -26,22 +26,32 @@ const navItems: NavItem[] = [
     name: "Tableau de bord",
     path: "/teacher"
   },
+  // {
+  //   icon: <Users size={18} />,
+  //   name: "Mes Étudiants",
+  //   subItems: [
+  //     { name: "Liste des étudiants", path: "/teacher/students" },
+  //     { name: "Fiches projets", path: "/teacher/projects-students", badge: 3 }
+  //   ]
+  // },
   {
     icon: <Users size={18} />,
     name: "Mes Étudiants",
-    subItems: [
-      { name: "Liste des étudiants", path: "/teacher/students" },
-      { name: "Fiches projets", path: "/teacher/projects-students", badge: 3 }
-    ]
+    path: "/teacher/students"
   },
+  // {
+  //   icon: <NotebookText size={18} />,
+  //   name: "Projets",
+  //   subItems: [
+  //     { name: "Tous les projets", path: "/teacher/projects-students" },
+  //     { name: "À valider", path: "/teacher/projects-students", badge: 2 },
+  //     { name: "En cours", path: "/teacher/projects-students" }
+  //   ]
+  // },
   {
     icon: <NotebookText size={18} />,
     name: "Projets",
-    subItems: [
-      { name: "Tous les projets", path: "/teacher/projects-students" },
-      { name: "À valider", path: "/teacher/projects-students", badge: 2 },
-      { name: "En cours", path: "/teacher/projects-students" }
-    ]
+    path: "/teacher/projects-students"
   },
   {
     icon: <CalendarDays size={18} />,
