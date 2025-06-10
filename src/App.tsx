@@ -62,9 +62,9 @@ export default function App() {
 
                     {/* Student Routes */}
                     <Route path="/student" element={
-                        <RoleProtectedRoute requiredRole='student' >
+                        // <RoleProtectedRoute requiredRole='student' >
                             <StudentAppLayout />
-                        </RoleProtectedRoute>
+                        // </RoleProtectedRoute>
                     }>
 
                         <Route path="/student" element={<StudentHome />} />
@@ -85,9 +85,9 @@ export default function App() {
 
                     {/* Admin Routes */}
                     <Route path="/admin" element={
-                        <RoleProtectedRoute requiredRole='Admin' >
+                        // <RoleProtectedRoute requiredRole='Admin' >
                             <AdminAppLayout />
-                        </RoleProtectedRoute>
+                        // </RoleProtectedRoute>
                     }>
                         <Route path="/admin" element={<AdminHome />} />
                         <Route index element={<AdminHome />} />
@@ -103,9 +103,9 @@ export default function App() {
 
                     {/* Teacher Routes */}
                     <Route path="/teacher" element={
-                        <RoleProtectedRoute requiredRole='teacher' >
+                        // <RoleProtectedRoute requiredRole='teacher' >
                             <TeacherAppLayout />
-                        </RoleProtectedRoute>
+                        // </RoleProtectedRoute>
                     }>
                         <Route index element={<TeacherHome />} />
                         <Route path="calendar" element={<MyCalendar />} />
@@ -121,9 +121,9 @@ export default function App() {
 
                     {/* Entreprise Routes */}
                     <Route path="/entreprise" element={
-                        <RoleProtectedRoute requiredRole='entreprise' >
+                        // <RoleProtectedRoute requiredRole='entreprise' >
                             <EntrepriseAppLayout />
-                        </RoleProtectedRoute>
+                        // </RoleProtectedRoute>
                     }>
                         <Route index element={<AddOffreStage />} />
                         <Route path="AddOffreStage" element={<AddOffreStage />} />
