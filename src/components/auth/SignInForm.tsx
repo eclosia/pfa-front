@@ -24,7 +24,7 @@ const SignInForm: React.FC = () => {
 
     const navigate = useNavigate();
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         const respence = await login(credentials);
 

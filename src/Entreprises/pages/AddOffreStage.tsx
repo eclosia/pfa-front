@@ -3,7 +3,8 @@ import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import PageMeta from "../../components/common/PageMeta";
 import Input from "../../components/form/input/InputField";
 import Select from "../../components/form/Select";
-import { useAuth } from "src/auth/authContext";
+import { useAuth } from "../../auth/authContext";
+import { useNavigate } from "react-router";
 
 interface OffreStageFormData {
     titre: string;
@@ -23,12 +24,14 @@ interface OffreStageFormData {
 
 const AddOffreStage: FC = () => {
 
-    // const { user } = useAuth();
+    const { user } = useAuth();
+
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState<OffreStageFormData>({
         titre: "",
         entreprise: "",
-        // entreprise_id: user?.id,
+        entreprise_id: user?.id,
         lieu: "",
         type: "Stage",
         description: "",
@@ -85,7 +88,7 @@ const AddOffreStage: FC = () => {
                 body: JSON.stringify({
                     "titre": formData.titre,
                     "entreprise": formData.entreprise,
-                    "entrepriseId": "12345",
+                    "entrepriseId": formData.entreprise_id,
                     "lieu": formData.lieu,
                     "type": formData.type,
                     "description": formData.description,
@@ -100,9 +103,10 @@ const AddOffreStage: FC = () => {
             
             if (!response.ok) {
                 throw new Error("Erreur lors de la soumission de l'offre");
+            }else{
+                navigate('/entreprise/job-offers');
             }
-            const data = await response.json();
-            console.log("Offre de stage soumise avec succès:", data);
+            
         } catch (error) {
             console.error("Erreur lors de la soumission de l'offre:", error);
         }
@@ -164,7 +168,6 @@ const AddOffreStage: FC = () => {
                                 <Select
                                     options={typesOffre}
                                     onChange={(value) => handleSelectChange("type", value)}
-                                    value={formData.type}
                                 />
                             </div>
 
@@ -173,8 +176,6 @@ const AddOffreStage: FC = () => {
                                 <Select
                                     options={niveauxEtude}
                                     onChange={(value) => handleSelectChange("niveauEtude", value)}
-                                    value={formData.niveauEtude}
-                                    required
                                 />
                             </div>
                         </div>

@@ -54,7 +54,7 @@ const navItems: NavItem[] = [
     {
         icon: <PageIcon />,
         name: "Stages",
-        path: "/student/job-offers",
+        path: "/entreprise/job-offers",
     }
 
 ];

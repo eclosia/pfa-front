@@ -47,6 +47,7 @@ import AddOffreStage from "./Entreprises/pages/AddOffreStage";
 // Other Components
 import NotFound from "./pages/OtherPage/NotFound";
 import { ScrollToTop } from "./components/common/ScrollToTop";
+import EntrepriseJobOffers from "./Entreprises/pages/EntrepriseJobOffers";
 
 export default function App() {
     return (
@@ -70,17 +71,17 @@ export default function App() {
 
                         <Route path="/student" element={<StudentHome />} />
 
-                        <Route path="student/profile" element={<UserProfiles />} />
+                        <Route path="profile" element={<UserProfiles />} />
 
-                        <Route path="student/messaging" element={<MessagingPage />} />
+                        <Route path="messaging" element={<MessagingPage />} />
 
 
                         {/* Job Offers */}
-                        <Route path="student/job-offers" element={<JobOffers />} />
+                        <Route path="job-offers" element={<JobOffers />} />
 
                         {/* Company Management */}
-                        <Route path="student/company-offers" element={<CompanyOffers />} />
-                        <Route path="student/student-evaluation" element={<StudentEvaluation />} />
+                        <Route path="company-offers" element={<CompanyOffers />} />
+                        <Route path="student-evaluation" element={<StudentEvaluation />} />
 
                     </Route>
 
@@ -127,6 +128,7 @@ export default function App() {
                     }>
                         <Route index element={<AddOffreStage />} />
                         <Route path="AddOffreStage" element={<AddOffreStage />} />
+                        <Route path="job-offers" element={<EntrepriseJobOffers />} />
                     </Route>
 
                     {/* Fallback Route */}
