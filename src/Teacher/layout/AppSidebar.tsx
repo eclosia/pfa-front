@@ -26,22 +26,32 @@ const navItems: NavItem[] = [
     name: "Tableau de bord",
     path: "/teacher"
   },
+  // {
+  //   icon: <Users size={18} />,
+  //   name: "Mes Étudiants",
+  //   subItems: [
+  //     { name: "Liste des étudiants", path: "/teacher/students" },
+  //     { name: "Fiches projets", path: "/teacher/projects-students", badge: 3 }
+  //   ]
+  // },
   {
     icon: <Users size={18} />,
     name: "Mes Étudiants",
-    subItems: [
-      { name: "Liste des étudiants", path: "/teacher/students" },
-      { name: "Fiches projets", path: "/teacher/projects-students", badge: 3 }
-    ]
+    path: "/teacher/students"
   },
+  // {
+  //   icon: <NotebookText size={18} />,
+  //   name: "Projets",
+  //   subItems: [
+  //     { name: "Tous les projets", path: "/teacher/projects-students" },
+  //     { name: "À valider", path: "/teacher/projects-students", badge: 2 },
+  //     { name: "En cours", path: "/teacher/projects-students" }
+  //   ]
+  // },
   {
     icon: <NotebookText size={18} />,
     name: "Projets",
-    subItems: [
-      { name: "Tous les projets", path: "/teacher/projects-students" },
-      { name: "À valider", path: "/teacher/projects-students", badge: 2 },
-      { name: "En cours", path: "/teacher/projects-students" }
-    ]
+    path: "/teacher/projects-students"
   },
   {
     icon: <CalendarDays size={18} />,
@@ -140,13 +150,11 @@ const AppSidebar: React.FC = () => {
           {nav.subItems ? (
             <button
               onClick={() => handleSubmenuToggle(index)}
-              className={`flex items-center w-full p-3 rounded-lg transition-colors ${
-                openSubmenu?.index === index
+              className={`flex items-center w-full p-3 rounded-lg transition-colors ${openSubmenu?.index === index
                   ? "bg-blue-50 text-blue-600 dark:bg-gray-800 dark:text-blue-400"
                   : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-              } ${
-                !isExpanded && !isHovered ? "justify-center" : "justify-start"
-              }`}
+                } ${!isExpanded && !isHovered ? "justify-center" : "justify-start"
+                }`}
             >
               <span className="flex-shrink-0">
                 {nav.icon}
@@ -156,22 +164,19 @@ const AppSidebar: React.FC = () => {
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
                 <ChevronDown
-                  className={`ml-auto w-5 h-5 transition-transform ${
-                    openSubmenu?.index === index ? "rotate-180" : ""
-                  }`}
+                  className={`ml-auto w-5 h-5 transition-transform ${openSubmenu?.index === index ? "rotate-180" : ""
+                    }`}
                 />
               )}
             </button>
           ) : (
             <Link
               to={nav.path || "#"}
-              className={`flex items-center w-full p-3 rounded-lg transition-colors ${
-                isActive(nav.path || "")
+              className={`flex items-center w-full p-3 rounded-lg transition-colors ${isActive(nav.path || "")
                   ? "bg-blue-50 text-blue-600 dark:bg-gray-800 dark:text-blue-400"
                   : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-              } ${
-                !isExpanded && !isHovered ? "justify-center" : "justify-start"
-              }`}
+                } ${!isExpanded && !isHovered ? "justify-center" : "justify-start"
+                }`}
             >
               <span className="flex-shrink-0">
                 {nav.icon}
@@ -199,11 +204,10 @@ const AppSidebar: React.FC = () => {
                   <li key={subItem.name}>
                     <Link
                       to={subItem.path}
-                      className={`block px-3 py-2 rounded-md text-sm ${
-                        isActive(subItem.path)
+                      className={`block px-3 py-2 rounded-md text-sm ${isActive(subItem.path)
                           ? "bg-blue-100 text-blue-700 dark:bg-gray-700 dark:text-blue-400"
                           : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center justify-between">
                         <span>{subItem.name}</span>
@@ -227,10 +231,9 @@ const AppSidebar: React.FC = () => {
   return (
     <aside
       className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
-        ${
-          isExpanded || isMobileOpen
-            ? "w-[290px]"
-            : isHovered
+        ${isExpanded || isMobileOpen
+          ? "w-[290px]"
+          : isHovered
             ? "w-[290px]"
             : "w-[90px]"
         }
@@ -240,9 +243,8 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`py-8 flex ${
-          !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
-        }`}
+        className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+          }`}
       >
         <a href="#" onClick={handleLogoClick} className="cursor-pointer">
           {isExpanded || isHovered || isMobileOpen ? (
@@ -277,9 +279,8 @@ const AppSidebar: React.FC = () => {
           <div className="flex flex-col gap-4">
             <div>
               <h2
-                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${
-                  !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
-                }`}
+                className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+                  }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Navigation"
@@ -292,6 +293,18 @@ const AppSidebar: React.FC = () => {
           </div>
         </nav>
       </div>
+      <div className="mt-auto mb-6 px-3">
+        <button
+          onClick={() => {
+            // TODO: Remplace ceci par ton système de logout
+            console.log("Déconnexion...");
+          }}
+          className="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors duration-200 border border-transparent"
+        >
+          Déconnexion
+        </button>
+      </div>
+
     </aside>
   );
 };

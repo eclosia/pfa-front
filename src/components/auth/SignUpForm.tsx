@@ -35,9 +35,9 @@ export default function SignUpForm() {
         }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
         try {
             const response = await fetch('http://localhost:8081/auth/register', {
                 method: 'POST',
@@ -78,8 +78,7 @@ export default function SignUpForm() {
                 message: error instanceof Error ? error.message : 'Erreur inconnue lors de l\'inscription'
             };
         }
-
-    };
+  };
 
     const nextStep = () => {
         setCurrentStep(prev => prev + 1);

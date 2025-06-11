@@ -71,7 +71,7 @@ export default function AppointmentModal({
     <Modal isOpen={isOpen} onClose={onClose} className="max-w-[500px]">
       <div className="p-6">
         <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-          Demander un rendez-vous
+          Planifier un rendez-vous
         </h3>
 
         {error && (

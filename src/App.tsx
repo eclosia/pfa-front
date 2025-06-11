@@ -26,6 +26,7 @@ import Stages from "./Admin/pages/Stages";
 import AddTeacher from "./Admin/pages/AddTeacher";
 import AddEntreprise from "./Admin/pages/AddEntreprise";
 import AdminProfile from "./Admin/pages/AdminProfile";
+import AffectationForm from "./Admin/pages/AffectationForm";
 
 // Teacher Components
 import TeacherAppLayout from "./Teacher/layout/TeacherAppLayout";
@@ -83,23 +84,22 @@ export default function App() {
 
                     </Route>
 
-                    {/* Admin Routes */}
-                    <Route path="/admin" element={
+                {/* Admin Routes */}
+                <Route path="/admin" element={
                         // <RoleProtectedRoute requiredRole='Admin' >
                             <AdminAppLayout />
                         // </RoleProtectedRoute>
                     }>
-                        <Route path="/admin" element={<AdminHome />} />
-                        <Route index element={<AdminHome />} />
-                        <Route path="students" element={<Students />} />
-                        <Route path="teachers" element={<Teachers />} />
-                        <Route path="companies" element={<Companies />} />
-                        <Route path="AdminProfile" element={<AdminProfile />} />
-                        <Route path="calendar" element={<Calendar />} />
-                        <Route path="stages" element={<Stages />} />
-                        <Route path="AddTeacher" element={<AddTeacher />} />
-                        <Route path="AddEntreprise" element={<AddEntreprise />} />
-                    </Route>
+                    <Route index element={<AdminHome />} />
+                    <Route path="students" element={<Students />} />
+                    <Route path="teachers" element={<Teachers />} />
+                    <Route path="companies" element={<Companies />} />
+                    <Route path="AdminProfile" element={<AdminProfile />} />
+                    <Route path="calendar" element={<Calendar />} />
+                    <Route path="stages" element={<Stages />} />
+                    <Route path="AddTeacher" element={<AddTeacher />} />
+                    <Route path="AddEntreprise" element={<AddEntreprise />} />
+                </Route>
 
                     {/* Teacher Routes */}
                     <Route path="/teacher" element={

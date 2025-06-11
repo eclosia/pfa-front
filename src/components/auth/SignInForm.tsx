@@ -24,7 +24,7 @@ const SignInForm: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         const respence = await login(credentials);
 
@@ -36,15 +36,13 @@ const SignInForm: React.FC = () => {
             }
         }
     };
-
     const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         const { name, value } = e.target;
         setCredentials(prev => ({
             ...prev,
             [name]: value,
         }));
-    };
-
+};
     return (
         <div className="flex flex-col flex-1">
             <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">

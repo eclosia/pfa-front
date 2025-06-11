@@ -11,17 +11,17 @@ import PageMeta from "../../components/common/PageMeta";
 interface CalendarEvent extends EventInput {
     extendedProps: {
         MyCalendar: string;
+        eventType: string;
     };
 }
 
 const MyCalendar: React.FC = () => {
-    const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
-        null
-    );
+    const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
     const [eventTitle, setEventTitle] = useState("");
     const [eventStartDate, setEventStartDate] = useState("");
     const [eventEndDate, setEventEndDate] = useState("");
-    const [eventLevel, setEventLevel] = useState("");
+    const [eventLevel, setEventLevel] = useState("Danger");
+    const [eventType, setEventType] = useState("Réunion");
     const [events, setEvents] = useState<CalendarEvent[]>([]);
     const calendarRef = useRef<FullCalendar>(null);
     const { isOpen, openModal, closeModal } = useModal();
@@ -33,27 +33,42 @@ const MyCalendar: React.FC = () => {
         Warning: "warning",
     };
 
+    const eventTypes = {
+        Réunion: "Réunion",
+        Atelier: "Atelier",
+        Conférence: "Conférence",
+        Autre: "Autre"
+    };
+
     useEffect(() => {
-        // Initialize with some events
         setEvents([
             {
                 id: "1",
-                title: "Event Conf.",
+                title: "Conférence annuelle",
                 start: new Date().toISOString().split("T")[0],
-                extendedProps: { MyCalendar: "Danger" },
+                extendedProps: { 
+                    MyCalendar: "Danger",
+                    eventType: "Conférence" 
+                },
             },
             {
                 id: "2",
-                title: "Meeting",
+                title: "Réunion d'équipe",
                 start: new Date(Date.now() + 86400000).toISOString().split("T")[0],
-                extendedProps: { MyCalendar: "Success" },
+                extendedProps: { 
+                    MyCalendar: "Success",
+                    eventType: "Réunion" 
+                },
             },
             {
                 id: "3",
-                title: "Workshop",
+                title: "Atelier de formation",
                 start: new Date(Date.now() + 172800000).toISOString().split("T")[0],
                 end: new Date(Date.now() + 259200000).toISOString().split("T")[0],
-                extendedProps: { MyCalendar: "Primary" },
+                extendedProps: { 
+                    MyCalendar: "Primary",
+                    eventType: "Atelier" 
+                },
             },
         ]);
     }, []);
@@ -72,12 +87,12 @@ const MyCalendar: React.FC = () => {
         setEventStartDate(event.start?.toISOString().split("T")[0] || "");
         setEventEndDate(event.end?.toISOString().split("T")[0] || "");
         setEventLevel(event.extendedProps.MyCalendar);
+        setEventType(event.extendedProps.eventType || "Réunion");
         openModal();
     };
 
     const handleAddOrUpdateEvent = () => {
         if (selectedEvent) {
-            // Update existing event
             setEvents((prevEvents) =>
                 prevEvents.map((event) =>
                     event.id === selectedEvent.id
@@ -86,20 +101,25 @@ const MyCalendar: React.FC = () => {
                             title: eventTitle,
                             start: eventStartDate,
                             end: eventEndDate,
-                            extendedProps: { MyCalendar: eventLevel },
+                            extendedProps: { 
+                                MyCalendar: eventLevel,
+                                eventType: eventType 
+                            },
                         }
                         : event
                 )
             );
         } else {
-            // Add new event
             const newEvent: CalendarEvent = {
                 id: Date.now().toString(),
                 title: eventTitle,
                 start: eventStartDate,
                 end: eventEndDate,
                 allDay: true,
-                extendedProps: { MyCalendar: eventLevel },
+                extendedProps: { 
+                    MyCalendar: eventLevel,
+                    eventType: eventType 
+                },
             };
             setEvents((prevEvents) => [...prevEvents, newEvent]);
         }
@@ -111,17 +131,18 @@ const MyCalendar: React.FC = () => {
         setEventTitle("");
         setEventStartDate("");
         setEventEndDate("");
-        setEventLevel("");
+        setEventLevel("Danger");
+        setEventType("Réunion");
         setSelectedEvent(null);
     };
 
     return (
         <>
             <PageMeta
-                title="React.js Calendar Dashboard | TailAdmin - Next.js Admin Dashboard Template"
-                description="This is React.js Calendar Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
+                title="Tableau de bord Calendrier React.js | TailAdmin - Template de tableau de bord Next.js"
+                description="Ceci est la page du tableau de bord Calendrier React.js pour TailAdmin - Template de tableau de bord React.js avec Tailwind CSS"
             />
-            <div className="rounded-2xl border  border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+            <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
                 <div className="custom-calendar">
                     <FullCalendar
                         ref={calendarRef}
@@ -139,9 +160,16 @@ const MyCalendar: React.FC = () => {
                         eventContent={renderEventContent}
                         customButtons={{
                             addEventButton: {
-                                text: "Add Event +",
+                                text: "Ajouter un événement +",
                                 click: openModal,
                             },
+                        }}
+                        locale="fr"
+                        buttonText={{
+                            today: "Aujourd'hui",
+                            month: "Mois",
+                            week: "Semaine",
+                            day: "Jour"
                         }}
                     />
                 </div>
@@ -153,18 +181,17 @@ const MyCalendar: React.FC = () => {
                     <div className="flex flex-col px-2 overflow-y-auto custom-scrollbar">
                         <div>
                             <h5 className="mb-2 font-semibold text-gray-800 modal-title text-theme-xl dark:text-white/90 lg:text-2xl">
-                                {selectedEvent ? "Edit Event" : "Add Event"}
+                                {selectedEvent ? "Modifier l'événement" : "Ajouter un événement"}
                             </h5>
                             <p className="text-sm text-gray-500 dark:text-gray-400">
-                                Plan your next big moment: schedule or edit an event to stay on
-                                track
+                                Planifiez votre prochain grand moment : programmez ou modifiez un événement pour rester sur la bonne voie
                             </p>
                         </div>
                         <div className="mt-8">
                             <div>
                                 <div>
                                     <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                        Event Title
+                                        Titre de l'événement
                                     </label>
                                     <input
                                         id="event-title"
@@ -175,16 +202,49 @@ const MyCalendar: React.FC = () => {
                                     />
                                 </div>
                             </div>
+
                             <div className="mt-6">
                                 <label className="block mb-4 text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Event Color
+                                    Type d'événement
+                                </label>
+                                <div className="flex flex-wrap items-center gap-4 sm:gap-5">
+                                    {Object.entries(eventTypes).map(([key, value]) => (
+                                        <div key={key} className="n-chk">
+                                            <div className="form-check form-check-inline">
+                                                <label
+                                                    className="flex items-center text-sm text-gray-700 form-check-label dark:text-gray-400"
+                                                    htmlFor={`type-${key}`}
+                                                >
+                                                    <span className="relative">
+                                                        <input
+                                                            className="sr-only form-check-input"
+                                                            type="radio"
+                                                            name="event-type"
+                                                            value={value}
+                                                            id={`type-${key}`}
+                                                            checked={eventType === value}
+                                                            onChange={() => setEventType(value)}
+                                                        />
+                                                        <span className="flex items-center justify-center w-5 h-5 mr-2 border border-gray-300 rounded-full box dark:border-gray-700">
+                                                            <span className="w-2 h-2 bg-white rounded-full dark:bg-transparent"></span>
+                                                        </span>
+                                                    </span>
+                                                    {value}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="mt-6">
+                                <label className="block mb-4 text-sm font-medium text-gray-700 dark:text-gray-400">
+                                    Couleur de l'événement
                                 </label>
                                 <div className="flex flex-wrap items-center gap-4 sm:gap-5">
                                     {Object.entries(calendarsEvents).map(([key, value]) => (
                                         <div key={key} className="n-chk">
-                                            <div
-                                                className={`form-check form-check-${value} form-check-inline`}
-                                            >
+                                            <div className={`form-check form-check-${value} form-check-inline`}>
                                                 <label
                                                     className="flex items-center text-sm text-gray-700 form-check-label dark:text-gray-400"
                                                     htmlFor={`modal${key}`}
@@ -213,7 +273,7 @@ const MyCalendar: React.FC = () => {
 
                             <div className="mt-6">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Enter Start Date
+                                    Date de début
                                 </label>
                                 <div className="relative">
                                     <input
@@ -228,7 +288,7 @@ const MyCalendar: React.FC = () => {
 
                             <div className="mt-6">
                                 <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Enter End Date
+                                    Date de fin
                                 </label>
                                 <div className="relative">
                                     <input
@@ -247,14 +307,14 @@ const MyCalendar: React.FC = () => {
                                 type="button"
                                 className="flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] sm:w-auto"
                             >
-                                Close
+                                Fermer
                             </button>
                             <button
                                 onClick={handleAddOrUpdateEvent}
                                 type="button"
                                 className="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto"
                             >
-                                {selectedEvent ? "Update Changes" : "Add Event"}
+                                {selectedEvent ? "Mettre à jour" : "Ajouter"}
                             </button>
                         </div>
                     </div>
@@ -269,6 +329,7 @@ const renderEventContent = (eventInfo: any) => {
     return (
         <div
             className={`event-fc-color flex fc-event-main ${colorClass} p-1 rounded`}
+            title={`${eventInfo.event.title} (${eventInfo.event.extendedProps.eventType})`}
         >
             <div className="fc-daygrid-event-dot"></div>
             <div className="fc-event-time">{eventInfo.timeText}</div>

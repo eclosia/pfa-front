@@ -10,7 +10,7 @@ export default function Teachers() {
 				title="Teachers | Eclosia"
 				description="This is React.js Basic Tables Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
 			/>
-			<PageBreadcrumb pageTitle="Teachers" />
+			<PageBreadcrumb pageTitle="Professeurs" />
 			<div className="space-y-6">
 
 				<TeachersTable />

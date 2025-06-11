@@ -134,12 +134,12 @@ export default function Evaluations() {
 
             <div className="flex justify-between items-center p-4 gap-2">
                 <div className="flex-1"></div>
-                <Button
+                {/* <Button
                     size="sm"
                     startIcon={<FileIcon className="size-5" />}
                 >
                     Exporter
-                </Button>
+                </Button> */}
             </div>
             <div className="max-w-full overflow-x-auto">
                 <div className="min-w-[1102px] px-2">

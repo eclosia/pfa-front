@@ -23,12 +23,29 @@ interface Deliverable {
 const mockStudents: Student[] = [
   { 
     id: 1, 
-    name: "Mohamed Derbi", 
-    email: "m.derbi@ensam-casa.ma",
+    name: "Rida Mihi", 
+    email: "ridamihi12@gmail.com",
     project: "Optimisation IA", 
     progress: 80, 
     status: "Prêt pour soutenance",
-    lastSubmission: "2023-05-15"
+    lastSubmission: "2025-06-17"
+  },{ 
+    id: 2, 
+    name: "Mohamed Derbi", 
+    email: "m.derbi@eniad.ma",
+    project: "Gestion de Stock", 
+    progress: 75, 
+    status: "Prêt pour soutenance",
+    lastSubmission: "2025-06-22"
+  },
+  { 
+    id: 3, 
+    name: "Sanae Elmahi", 
+    email: "e.sanae@eniad.ma",
+    project: "Suivi des Absences", 
+    progress: 80, 
+    status: "Prêt pour soutenance",
+    lastSubmission: "2023-06-16"
   },
   { 
     id: 2, 
@@ -169,12 +186,12 @@ export default function Soutenances() {
                   className="pl-10 pr-4 py-2 rounded-lg bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm border border-gray-300 dark:border-gray-600 placeholder-gray-400 dark:placeholder-gray-500 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full"
                 />
               </div>
-              <button
+              {/* <button
                 onClick={() => alert("Export des données")}
                 className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors px-5 py-2 rounded-lg font-semibold text-white"
               >
                 <FiDownload /> Exporter
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

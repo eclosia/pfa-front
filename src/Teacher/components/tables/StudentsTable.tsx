@@ -119,7 +119,7 @@ export default function StudentsTable() {
     return (
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
             <div className="flex justify-end p-4 gap-2">
-                <Button
+                {/* <Button
                     size="sm"
                     startIcon={<PlusIcon className="size-5" />}
                     onClick={openAddModal}
@@ -133,7 +133,7 @@ export default function StudentsTable() {
                     onClick={openAddModal}
                 >
                     Import
-                </Button>
+                </Button> */}
             </div>
             <div className="max-w-full overflow-x-auto">
                 <div className="min-w-[1102px] px-2">
@@ -207,9 +207,9 @@ export default function StudentsTable() {
                                                 variant="outline"
                                                 startIcon={<PencilIcon className="size-5" />}
                                                 onClick={openEditModal}
-                                            >Edit</Button>
+                                            >Contacter</Button>
 
-                                            <Button
+                                            {/* <Button
                                                 size="sm"
                                                 variant="outline"
                                                 startIcon={<LockIcon className="size-5" />}
@@ -221,7 +221,7 @@ export default function StudentsTable() {
                                                 variant="outline"
                                                 startIcon={<TrashBinIcon className="size-5" />}
                                                 onClick={alert}
-                                            >Delete</Button>
+                                            >Delete</Button> */}
                                         </div>
                                     </TableCell>
                                 </TableRow>
