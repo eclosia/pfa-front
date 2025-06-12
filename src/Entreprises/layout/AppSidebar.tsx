@@ -6,6 +6,7 @@ import {
     GridIcon,
     HorizontaLDots,
     PageIcon,
+    UserIcon,
 } from "../../icons";
  
 import { useSidebar } from "../../context/SidebarContext";
@@ -35,6 +36,11 @@ const navItems: NavItem[] = [
         icon: <PageIcon />,
         name: "Stages",
         path: "/entreprise/job-offers",
+    },
+    {
+        icon: <PageIcon />,
+        name: "Candidatures",
+        path: "/entreprise/job-applications",
     }
 
 ];

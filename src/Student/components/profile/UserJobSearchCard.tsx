@@ -11,6 +11,7 @@ interface JobOffer {
     id: number;
     titre: string;
     entreprise: string;
+    entrepriseId: number;
     lieu: string;
     type: string;
     description: string;
@@ -165,8 +166,9 @@ export default function UserJobSearchCard() {
                 body: JSON.stringify({
                     "cv_path": "sadik",
                     "motivation_path": "sadik",
-                    "etudiant_id": 45, // TODO: replace 45 by user?.id
-                    "stage_id": 6 // TODO: replace 6 by selectedOffer?.id
+                    "etudiantid": 46 , // TODO: user?.id,
+                    "stageid": 6 , // TODO: selectedOffer?.id,
+                    "entrepriseid": 6 // TODO: selectedOffer?.entrepriseId
                 })
             });
             if (!response.ok) {

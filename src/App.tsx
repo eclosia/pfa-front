@@ -44,11 +44,12 @@ import MessagingPageTeacher from "./Teacher/pages/MessagingPageTeacher";
 // Entreprise Components
 import EntrepriseAppLayout from "./Entreprises/layout/EntrepriseAppLayout";
 import AddOffreStage from "./Entreprises/pages/AddOffreStage";
+import EntrepriseJobOffers from "./Entreprises/pages/EntrepriseJobOffers";
+import EntrepriseJobApplications from "./Entreprises/pages/JobApplications";
 
 // Other Components
 import NotFound from "./pages/OtherPage/NotFound";
 import { ScrollToTop } from "./components/common/ScrollToTop";
-import EntrepriseJobOffers from "./Entreprises/pages/EntrepriseJobOffers";
 
 export default function App() {
     return (
@@ -131,6 +132,7 @@ export default function App() {
                         <Route index element={<AddOffreStage />} />
                         <Route path="AddOffreStage" element={<AddOffreStage />} />
                         <Route path="job-offers" element={<EntrepriseJobOffers />} />
+                        <Route path="job-applications" element={<EntrepriseJobApplications />} />
                     </Route>
 
                     {/* Fallback Route */}

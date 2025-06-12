@@ -1,14 +1,25 @@
 import { useState, useEffect } from "react";
-import { useModal } from "../../hooks/useModal";
 import { Modal } from "../../components/ui/modal";
 import Button from "../../components/ui/button/Button";
-import Label from "../../components/form/Label";
 import { Alert } from "../../components/ui/alert/Alert";
-import { FiSearch, FiFilter, FiX, FiCheck, FiCalendar, FiDollarSign, FiMapPin, FiBriefcase, FiClock, FiUser, FiTrash2, FiEdit2 } from "react-icons/fi";
+import { FiX, FiCheck, FiCalendar, FiDollarSign, FiMapPin, FiBriefcase, FiClock, FiUser, FiEdit2, FiTrash2 } from "react-icons/fi";
 import { useAuth } from "../../auth/authContext";
 
-interface JobOffer {
-	id: string;
+interface Application {
+	id: number;
+	cvPath: string;
+	dateCandidature: string;
+	entreprise: string;
+	entrepriseId: number;
+	etudiantId: number;
+	motivationPath: string;
+	stageId: number;
+	statut: string;
+	titre: string;
+}
+
+interface Stage {
+	id: number;
 	titre: string;
 	entreprise: string;
 	lieu: string;
@@ -19,38 +30,47 @@ interface JobOffer {
 	benefits?: string[];
 	remuneration: number;
 	duree: string;
-	dateDebut: string;
+	debut: string;
 	createdAt: string;
-	contactEmail: string;
+	contact_email: string;
 	remote: boolean;
 }
 
-export default function EntrepriseJobSearchCard() {
+export default function EntrepriseJobApplications() {
 
 	const { user } = useAuth();
 
-	const { isOpen, openModal, closeModal } = useModal();
+	const [applications, setApplications] = useState<Application[]>([]);
 
-	const [offers, setOffers] = useState<JobOffer[]>([]);
-
-	const [filteredOffers, setFilteredOffers] = useState<JobOffer[]>([]);
-
-	const [filters, setFilters] = useState({
-		search: "",
-		type: "all",
-		location: "all",
-		remote: "all"
-	});
-
-	const [selectedOfferDetails, setSelectedOfferDetails] = useState<JobOffer | null>(null);
+	const [selectedApp, setSelectedApp] = useState<Application | null>(null);
 
 	const [showAlert, setShowAlert] = useState(false);
 
+	const [alertConfig, setAlertConfig] = useState<{
+		variant: 'success' | 'error' | 'warning' | 'info';
+		title: string;
+		message: string;
+		doAction?: boolean;
+		actionText?: string;
+		action?: () => void;
+	}>({
+		variant: 'success',
+		title: '',
+		message: '',
+		doAction: false,
+		actionText: '',
+		action: () => { }
+	});
+
 	const [isLoading, setIsLoading] = useState(true);
 
-	const fetchOffers = async () => {
+	const [confirmModal, setConfirmModal] = useState(false);
+
+	const [stage, setStage] = useState<Stage | null>(null);
+
+	const fetchApplications = async () => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/stages/enterprise/12345`, { // ${user.id}
+			const response = await fetch(`http://localhost:8082/api/condidature/entreprise/6`, { // TODO: replace 6 with ${user?.id}
 				method: 'GET',
 			});
 
@@ -58,92 +78,155 @@ export default function EntrepriseJobSearchCard() {
 				throw new Error();
 			} else {
 				const data = await response.json();
-				console.log("Offres récupérées:", data);
-				setOffers(data);
+				console.log("Candidatures récupérées:", data);
+				setApplications(data);
 				setIsLoading(false);
 			}
 
 		} catch (error) {
 			setIsLoading(false);
-			console.error("Erreur lors de la recuperation des l'offres:", error);
+			console.error("Erreur lors de la recuperation des candidatures:", error);
 		}
 	}
 
 	useEffect(() => {
-		fetchOffers();
+
+		setIsLoading(true);
+		fetchApplications();
+
 	}, []);
 
-	useEffect(() => {
-		let filtered = offers;
-
-		if (filters.search) {
-			const searchTerm = filters.search.toLowerCase();
-			filtered = filtered.filter(offer =>
-				offer.titre.toLowerCase().includes(searchTerm) ||
-				offer.entreprise.toLowerCase().includes(searchTerm) ||
-				offer.description.toLowerCase().includes(searchTerm) ||
-				splitString(offer.technologies).some(req => req.toLowerCase().includes(searchTerm))
-			);
-		}
-
-		if (filters.type !== "all") {
-			filtered = filtered.filter(offer => offer.type === filters.type);
-		}
-
-		if (filters.location !== "all") {
-			filtered = filtered.filter(offer => offer.lieu === filters.location);
-		}
-
-		if (filters.remote !== "all") {
-			filtered = filtered.filter(offer =>
-				filters.remote === "yes" ? offer.remote : !offer.remote
-			);
-		}
-
-		setFilteredOffers(filtered);
-	}, [filters, offers]);
-
-	const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-		const { name, value } = e.target;
-		setFilters(prev => ({
-			...prev,
-			[name]: value
-		}));
+	const handleApplyClick = (app: Application) => {
+		setSelectedApp(app);
 	};
 
-	const handleViewDetails = (offer: JobOffer) => {
-		setSelectedOfferDetails(offer);
-	};
-
-	const resetFilters = () => {
-		setFilters({
-			search: "",
-			type: "all",
-			location: "all",
-			remote: "all"
-		});
-	};
-
-	const handleDelete = async (offer: JobOffer) => {
+	const handleViewDetails = async (stage_id: number) => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/stages/${offer.id}`, {
+			const response = await fetch(`http://localhost:8082/api/stages/${stage_id}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+			});
+			if (!response.ok) {
+				setStage(null);
+				setAlertConfig({
+					variant: 'error',
+					title: 'Erreur',
+					message: 'Une erreur est survenue lors de la recuperation des details. Veuillez réessayer plus tard.'
+				});
+				setShowAlert(true);
+				throw new Error('Erreur lors de l\'envoi de la candidature');
+			} else {
+				const data = await response.json();
+				setStage(data);
+			}
+		} catch (error) {
+			setAlertConfig({
+				variant: 'error',
+				title: 'Erreur',
+				message: 'Une erreur est survenue lors de l\'envoi de votre candidature. Veuillez réessayer plus tard.'
+			});
+			setShowAlert(true);
+		}
+	};
+
+	const handleAppAnulation = async (id: number | undefined) => {
+		try {
+			const response = await fetch(`http://localhost:8082/api/condidature/${id}`, {
 				method: 'DELETE',
 			});
-
 			if (!response.ok) {
-				throw new Error();
-			} else {
+				setConfirmModal(false);
+				setAlertConfig({
+					variant: 'error',
+					title: 'Erreur',
+					message: 'Une erreur est survenue lors de l\'annulation de votre candidature. Veuillez réessayer plus tard.'
+				});
 				setShowAlert(true);
-				setOffers(prev => prev.filter(o => o.id !== offer.id));
+				throw new Error('Erreur lors de l\'annulation de la candidature');
+			} else {
+				setConfirmModal(false);
+				setAlertConfig({
+					variant: 'success',
+					title: 'Candidature annulée',
+					message: 'Votre candidature a été annulée avec succès !'
+				});
+				setShowAlert(true);
+				fetchApplications(); // Refresh applications list
 			}
-
 		} catch (error) {
-			console.error("Erreur lors de la suppression de l'offre:", error);
+			setAlertConfig({
+				variant: 'error',
+				title: 'Erreur',
+				message: 'Une erreur est survenue lors de l\'annulation de votre candidature. Veuillez réessayer plus tard.'
+			});
+			setShowAlert(true);
 		}
-	};
+	}
 
-	const handleEdit = (offer: JobOffer) => {
+	const handleAccepteApp = async (id: number | undefined) => {
+		try {
+			const response = await fetch(`http://localhost:8082/api/condidature/accepte/${id}`, {
+				method: 'PUT',
+			});
+			if (!response.ok) {
+				setAlertConfig({
+					variant: 'error',
+					title: 'Erreur',
+					message: 'Une erreur est survenue lors de l\'acceptation de la candidature. Veuillez réessayer plus tard.'
+				});
+				setShowAlert(true);
+				throw new Error('Erreur lors de l\'acceptation de la candidature');
+			} else {
+				setAlertConfig({
+					variant: 'success',
+					title: 'Candidature acceptée',
+					message: 'La candidature a été acceptée avec succès !'
+				});
+				setShowAlert(true);
+				fetchApplications(); // Refresh applications list
+			}
+		} catch (error) {
+			setAlertConfig({
+				variant: 'error',
+				title: 'Erreur',
+				message: 'Une erreur est survenue lors de l\'acceptation de la candidature. Veuillez réessayer plus tard.'
+			});
+			setShowAlert(true);
+		}
+	}
 
+	const handleRejectApp = async (id: number | undefined) => {
+		try {
+			const response = await fetch(`http://localhost:8082/api/condidature/reject/${id}`, {
+				method: 'PUT',
+			});
+			if (!response.ok) {
+				setAlertConfig({
+					variant: 'error',
+					title: 'Erreur',
+					message: 'Une erreur est survenue lors du rejet de la candidature. Veuillez réessayer plus tard.'
+				});
+				setShowAlert(true);
+				throw new Error('Erreur lors du rejet de la candidature');
+			} else {
+				setAlertConfig({
+					variant: 'success',
+					title: 'Candidature rejetée',
+					message: 'La candidature a été rejetée avec succès !'
+				});
+				setShowAlert(true);
+				fetchApplications(); // Refresh applications list
+			}
+		} catch (error) {
+			setAlertConfig({
+				variant: 'error',
+				title: 'Erreur',
+				message: 'Une erreur est survenue lors du rejet de la candidature. Veuillez réessayer plus tard.'
+			});
+			setShowAlert(true);
+		}
 	};
 
 	const splitString = (input: string): string[] => {
@@ -158,115 +241,26 @@ export default function EntrepriseJobSearchCard() {
 			.filter(item => item !== '');
 
 	}
+
 	return (
 		<div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6 bg-transparent">
 			{showAlert && (
 				<Alert
-					variant="success"
-					title="Offre supprimée"
-					message="L'offre a été supprimée avec succès."
+					variant={alertConfig.variant}
+					title={alertConfig.title}
+					message={alertConfig.message}
 					onClose={() => setShowAlert(false)}
 					autoClose={true}
-					duration={9000}
+					duration={5000}
 				/>
 			)}
 
 			<div className="flex flex-col gap-6">
-				<div className="flex items-center gap-4 mb-6">
-
-					{/* Barre de recherche améliorée */}
-					<div className="flex-1">
-						<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-							<FiSearch className="text-gray-400" />
-						</div>
-						<input
-							type="text"
-							name="search"
-							value={filters.search}
-							onChange={handleFilterChange}
-							placeholder="Rechercher par mot-clé, entreprise ou compétence..."
-							className="w-full rounded-lg border border-gray-300 bg-white px-10 py-3 text-sm font-medium text-gray-700 shadow-theme-xs focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-900/50"
-						/>
-						{filters.search && (
-							<button
-								onClick={() => setFilters(prev => ({ ...prev, search: "" }))}
-								className="absolute inset-y-0 right-0 pr-3 flex items-center"
-							>
-								<FiX className="text-gray-400 hover:text-gray-600" />
-							</button>
-						)}
-					</div>
-					
-						<button
-							onClick={openModal}
-							className="flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
-						>
-							<FiFilter className="w-4 h-4" />
-							Filtrer
-						</button>
-					
-				</div>
-
-				{/* Filtres actifs */}
-				{(filters.type !== "all" || filters.location !== "all" || filters.remote !== "all") && (
-					<div className="flex flex-wrap items-center gap-2">
-						<span className="text-sm text-gray-500">Filtres :</span>
-						{filters.type !== "all" && (
-							<span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-								{filters.type}
-								<button
-									onClick={() => setFilters(prev => ({ ...prev, type: "all" }))}
-									className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-blue-400 hover:bg-blue-200 hover:text-blue-600 dark:hover:bg-blue-800"
-								>
-									<FiX className="w-3 h-3" />
-								</button>
-							</span>
-						)}
-						{filters.location !== "all" && (
-							<span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-								{filters.location}
-								<button
-									onClick={() => setFilters(prev => ({ ...prev, location: "all" }))}
-									className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-green-400 hover:bg-green-200 hover:text-green-600 dark:hover:bg-green-800"
-								>
-									<FiX className="w-3 h-3" />
-								</button>
-							</span>
-						)}
-						{filters.remote !== "all" && (
-							<span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">
-								{filters.remote === "yes" ? "Télétravail" : "Présentiel"}
-								<button
-									onClick={() => setFilters(prev => ({ ...prev, remote: "all" }))}
-									className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-purple-400 hover:bg-purple-200 hover:text-purple-600 dark:hover:bg-purple-800"
-								>
-									<FiX className="w-3 h-3" />
-								</button>
-							</span>
-						)}
-						<button
-							onClick={resetFilters}
-							className="ml-2 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-						>
-							Réinitialiser
-						</button>
-					</div>
-				)}
-
-				{/* Résultats */}
 				<div>
 					<div className="flex items-center justify-between mb-4">
 						<h5 className="font-medium text-gray-700 dark:text-gray-300">
-							{filteredOffers.length} {filteredOffers.length === 1 ? 'offre trouvée' : 'offres trouvées'}
+							{applications.length} {applications.length === 1 ? 'candidature trouvée' : 'candidatures trouvées'}
 						</h5>
-						<div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-							<span>Trier par :</span>
-							<select className="ml-2 bg-transparent border-0 focus:ring-2 focus:ring-blue-200 rounded-md">
-								<option>Pertinence</option>
-								<option>Date de publication</option>
-								<option>Salaire</option>
-							</select>
-						</div>
 					</div>
 
 					{isLoading ? (
@@ -285,167 +279,138 @@ export default function EntrepriseJobSearchCard() {
 								</div>
 							))}
 						</div>
-					) : filteredOffers.length === 0 ? (
+					) : applications.length === 0 ? (
 						<div className="text-center py-10">
 							<div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center dark:bg-gray-800 mb-4">
 								<FiBriefcase className="w-10 h-10 text-gray-400" />
 							</div>
 							<h5 className="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">
-								Aucune offre ne correspond à vos critères
+								Aucune candidature ne correspond à vos critères
 							</h5>
-							<p className="text-gray-500 dark:text-gray-400 mb-4">
-								Essayez d'élargir votre recherche ou de modifier vos filtres
-							</p>
-							<button
-								onClick={resetFilters}
-								className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
-							>
-								Réinitialiser les filtres
-							</button>
+
 						</div>
 					) : (
 						<div className="space-y-4">
-							{filteredOffers.map((offer) => (
+							{applications.map((app) => (
 								<div
-									key={offer.id}
+									key={app.id}
 									className="rounded-lg border border-gray-200 bg-white p-6 transition-all hover:shadow-md dark:border-gray-800 dark:bg-gray-800 dark:hover:shadow-none"
+									onMouseEnter={() => handleApplyClick(app)}
 								>
 									<div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
 										<div className="flex-1">
 											<div className="flex items-start gap-4">
 												<div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center flex-shrink-0">
 													<span className="text-lg font-bold text-gray-500 dark:text-gray-400">
-														{offer.entreprise.charAt(0)}
+														{app.entreprise.charAt(0)}
 													</span>
 												</div>
 												<div>
 													<h5 className="text-lg font-bold text-gray-800 dark:text-white/90 mb-1">
-														{offer.titre}
+														{app.titre}
 													</h5>
 													<p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-														{offer.entreprise} • <FiMapPin className="inline mr-1" />{offer.lieu}
-														{offer.remote && <span className="ml-2 text-green-600 dark:text-green-400">(Télétravail possible)</span>}
+														{app.entreprise} • <FiCalendar className="inline mr-1" />
+														{app.dateCandidature}
 													</p>
 													<div className="flex flex-wrap items-center gap-2 mb-3">
-														<span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${offer.type === "Stage" ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400" :
-															offer.type === "Alternance" ? "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400" :
-																"bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400"
-															}`}>
-															{offer.type}
+														<span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+															${app.statut === 'en_attente'
+																? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
+																: app.statut === 'accepte'
+																	? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+																	: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+															}`}
+														>
+															{app.statut === 'en_attente'
+																? 'En attente'
+																: app.statut === 'accepte'
+																	? 'Accepté'
+																	: 'Refusé'}
 														</span>
-														<span className="inline-flex items-center text-xs text-gray-500 dark:text-gray-400">
-															<FiClock className="mr-1" /> {offer.duree}
-														</span>
-														<span className="inline-flex items-center text-xs text-gray-500 dark:text-gray-400">
-															<FiCalendar className="mr-1" /> {offer.dateDebut}
-														</span>
-														{offer.remuneration != 0 && (
-															<span className="inline-flex items-center text-xs text-gray-500 dark:text-gray-400">
-																<FiDollarSign className="mr-1" /> {offer.remuneration}
-															</span>
-														)}
 													</div>
 												</div>
 											</div>
-											<p className="mt-3 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-												{offer.description}
-											</p>
-											<div className="mt-4 flex flex-wrap gap-2">
-												{splitString(offer.technologies).map((req, index) => (
-													<span
-														key={index}
-														className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-700 dark:text-gray-400"
-													>
-														{req}
-													</span>
-												))}
-												{splitString(offer.technologies).length > 5 && (
-													<span className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-700 dark:text-gray-400">
-														+{splitString(offer.technologies).length - 5} autres
-													</span>
-												)}
-											</div>
 										</div>
+
 										<div className="flex flex-col items-end gap-3">
+											<Button
+												size="sm"
+												// TODO: create modale for student profile
+												className="min-w-[120px]"
+											>
+												profile d'etudiant
+											</Button>
+
 											<div className="flex gap-2">
 												<Button
 													size="sm"
 													variant="outline"
-													onClick={() => handleEdit(offer)}
+													onClick={() => handleAccepteApp(selectedApp?.id) }	
 													className="min-w-[80px] hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 dark:hover:bg-blue-900/20 dark:hover:border-blue-600 dark:hover:text-blue-400"
 												>
-													<FiEdit2 className="w-4 h-4 mr-1" />
-													Modifier
+													<FiCheck className="w-4 h-4 mr-1" />
+													Accepter
 												</Button>
 												<Button
 													size="sm"
 													variant="outline"
-													onClick={() => handleDelete(offer)}
+													onClick={() => handleRejectApp(selectedApp?.id)}
 													className="min-w-[80px] hover:bg-red-50 hover:border-red-300 hover:text-red-700 dark:hover:bg-red-900/20 dark:hover:border-red-600 dark:hover:text-red-400"
 												>
-													<FiTrash2 className="w-4 h-4 mr-1" />
-													Supprimer
+													<FiX className="w-4 h-4 mr-1" />
+													refuser
 												</Button>
 											</div>
-
-											<Button
-												size="sm"
-												onClick={() => handleViewDetails(offer)}
-												className="min-w-[120px]"
-											>
-												Voir détails
-											</Button>
 										</div>
 									</div>
 								</div>
-
-
 							))}
 						</div>
 					)}
 				</div>
 			</div>
 
-			{/* Modal de détails de l'offre */}
-			<Modal isOpen={!!selectedOfferDetails} onClose={() => setSelectedOfferDetails(null)} className="max-w-3xl">
+			{/* Modal de détails de stage  */}
+			<Modal isOpen={!!stage} onClose={() => setStage(null)} className="max-w-3xl">
 				<div className="no-scrollbar relative w-full overflow-y-auto rounded-2xl bg-white p-6 dark:bg-gray-900 lg:p-8">
 					<button
-						onClick={() => setSelectedOfferDetails(null)}
+						onClick={() => setStage(null)}
 						className="absolute right-4 top-4 rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800"
 					>
 						<FiX className="w-5 h-5" />
 					</button>
 
 					<div className="px-2">
-						{selectedOfferDetails && (
+						{stage && (
 							<>
 								<div className="mb-6">
 									<h4 className="text-2xl font-bold text-gray-800 dark:text-white/90 mb-2">
-										{selectedOfferDetails.titre}
+										{stage.titre}
 									</h4>
 									<p className="text-lg text-gray-600 dark:text-gray-400 mb-1">
-										{selectedOfferDetails.entreprise} • <FiMapPin className="inline mr-1" />
-										{selectedOfferDetails.lieu}
-										{selectedOfferDetails.remote && (
+										{stage.entreprise} • <FiMapPin className="inline mr-1" />
+										{stage.lieu}
+										{stage.remote && (
 											<span className="ml-2 text-green-600 dark:text-green-400">(Télétravail possible)</span>
 										)}
 									</p>
 									<div className="flex flex-wrap items-center gap-2 mt-3">
-										<span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${selectedOfferDetails.type === "Stage" ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400" :
-											selectedOfferDetails.type === "Alternance" ? "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400" :
+										<span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${stage.type === "Stage" ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400" :
+											stage.type === "Alternance" ? "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400" :
 												"bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400"
 											}`}>
-											{selectedOfferDetails.type}
+											{stage.type}
 										</span>
 										<span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-											<FiClock className="mr-1" /> {selectedOfferDetails.duree}
+											<FiClock className="mr-1" /> {stage.duree}
 										</span>
 										<span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-											<FiCalendar className="mr-1" /> Début : {selectedOfferDetails.dateDebut}
+											<FiCalendar className="mr-1" /> Début : {stage.debut}
 										</span>
-										{selectedOfferDetails.remuneration != 0 && (
+										{stage.remuneration != 0 && (
 											<span className="inline-flex items-center px-3 py-1 rounded-full text-xs text-gray-500 dark:text-gray-400">
-												<FiDollarSign className="mr-1" /> {selectedOfferDetails.remuneration}
+												<FiDollarSign className="mr-1" /> {stage.remuneration}
 											</span>
 										)}
 									</div>
@@ -459,7 +424,7 @@ export default function EntrepriseJobSearchCard() {
 													Description du poste
 												</h5>
 												<span className="text-sm text-gray-500 dark:text-gray-400">
-													Publié le {new Date(selectedOfferDetails.createdAt).toLocaleDateString('fr-FR', {
+													Publié le {new Date(stage.createdAt).toLocaleDateString('fr-FR', {
 														day: 'numeric',
 														month: 'long',
 														year: 'numeric'
@@ -468,18 +433,18 @@ export default function EntrepriseJobSearchCard() {
 											</div>
 											<div className="prose dark:prose-invert max-w-none">
 												<p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">
-													{selectedOfferDetails.description}
+													{stage.description}
 												</p>
 											</div>
 										</div>
 
-										{selectedOfferDetails.responsibilities && selectedOfferDetails.responsibilities.length > 0 && (
+										{stage.responsibilities && stage.responsibilities.length > 0 && (
 											<div className="mb-6 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
 												<h5 className="text-lg font-semibold text-gray-800 dark:text-white/90 mb-4">
 													Responsabilités
 												</h5>
 												<ul className="space-y-3">
-													{selectedOfferDetails.responsibilities.map((resp, index) => (
+													{stage.responsibilities.map((resp, index) => (
 														<li key={index} className="flex items-start">
 															<span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 mr-3 flex-shrink-0">
 																{index + 1}
@@ -496,7 +461,7 @@ export default function EntrepriseJobSearchCard() {
 												Compétences requises
 											</h5>
 											<div className="flex flex-wrap gap-2">
-												{splitString(selectedOfferDetails.technologies).map((req, index) => (
+												{splitString(stage.technologies).map((req, index) => (
 													<span
 														key={index}
 														className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
@@ -518,21 +483,21 @@ export default function EntrepriseJobSearchCard() {
 													<FiBriefcase className="w-5 h-5 text-gray-400 mr-3" />
 													<div>
 														<h6 className="text-sm font-medium text-gray-500 dark:text-gray-400">Type de contrat</h6>
-														<p className="text-gray-800 dark:text-gray-200">{selectedOfferDetails.type}</p>
+														<p className="text-gray-800 dark:text-gray-200">{stage.type}</p>
 													</div>
 												</div>
 												<div className="flex items-center">
 													<FiClock className="w-5 h-5 text-gray-400 mr-3" />
 													<div>
 														<h6 className="text-sm font-medium text-gray-500 dark:text-gray-400">Durée</h6>
-														<p className="text-gray-800 dark:text-gray-200">{selectedOfferDetails.duree}</p>
+														<p className="text-gray-800 dark:text-gray-200">{stage.duree}</p>
 													</div>
 												</div>
 												<div className="flex items-center">
 													<FiCalendar className="w-5 h-5 text-gray-400 mr-3" />
 													<div>
 														<h6 className="text-sm font-medium text-gray-500 dark:text-gray-400">Date de début</h6>
-														<p className="text-gray-800 dark:text-gray-200">{selectedOfferDetails.dateDebut}</p>
+														<p className="text-gray-800 dark:text-gray-200">{stage.debut}</p>
 													</div>
 												</div>
 												<div className="flex items-center">
@@ -540,7 +505,7 @@ export default function EntrepriseJobSearchCard() {
 													<div>
 														<h6 className="text-sm font-medium text-gray-500 dark:text-gray-400">Date de publication</h6>
 														<p className="text-gray-800 dark:text-gray-200">
-															{selectedOfferDetails.createdAt ? new Date(selectedOfferDetails.createdAt).toLocaleDateString('fr-FR', {
+															{stage.createdAt ? new Date(stage.createdAt).toLocaleDateString('fr-FR', {
 																day: 'numeric',
 																month: 'long',
 																year: 'numeric'
@@ -548,12 +513,12 @@ export default function EntrepriseJobSearchCard() {
 														</p>
 													</div>
 												</div>
-												{selectedOfferDetails.remuneration != 0 && (
+												{stage.remuneration != 0 && (
 													<div className="flex items-center">
 														<FiDollarSign className="w-5 h-5 text-gray-400 mr-3" />
 														<div>
 															<h6 className="text-sm font-medium text-gray-500 dark:text-gray-400">Salaire</h6>
-															<p className="text-gray-800 dark:text-gray-200">{selectedOfferDetails.remuneration}</p>
+															<p className="text-gray-800 dark:text-gray-200">{stage.remuneration}</p>
 														</div>
 													</div>
 												)}
@@ -562,8 +527,8 @@ export default function EntrepriseJobSearchCard() {
 													<div>
 														<h6 className="text-sm font-medium text-gray-500 dark:text-gray-400">Localisation</h6>
 														<p className="text-gray-800 dark:text-gray-200">
-															{selectedOfferDetails.lieu}
-															{selectedOfferDetails.remote && (
+															{stage.lieu}
+															{stage.remote && (
 																<span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
 																	Télétravail possible
 																</span>
@@ -575,19 +540,23 @@ export default function EntrepriseJobSearchCard() {
 													<FiUser className="w-5 h-5 text-gray-400 mr-3" />
 													<div>
 														<h6 className="text-sm font-medium text-gray-500 dark:text-gray-400">Contact</h6>
-														<p className="text-gray-800 dark:text-gray-200">{selectedOfferDetails.contactEmail}</p>
+														<p className="text-gray-800 dark:text-gray-200">{stage.contact_email}</p>
 													</div>
 												</div>
 											</div>
+
+											<div className="mt-6">
+
+											</div>
 										</div>
 
-										{selectedOfferDetails.benefits && selectedOfferDetails.benefits.length > 0 && (
+										{stage.benefits && stage.benefits.length > 0 && (
 											<div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
 												<h5 className="text-lg font-semibold text-gray-800 dark:text-white/90 mb-4">
 													Avantages
 												</h5>
 												<ul className="space-y-3">
-													{selectedOfferDetails.benefits.map((benefit, index) => (
+													{stage.benefits.map((benefit, index) => (
 														<li key={index} className="flex items-start">
 															<FiCheck className="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
 															<span className="text-gray-700 dark:text-gray-300">{benefit}</span>
@@ -604,8 +573,36 @@ export default function EntrepriseJobSearchCard() {
 				</div>
 			</Modal>
 
+			{/* Modal de confirmation de candidature amélioré */}
+			<Modal isOpen={confirmModal} onClose={() => setConfirmModal(false)} className="max-w-md">
+				<div className="relative w-full rounded-2xl bg-white p-6 dark:bg-gray-900">
+					<button
+						onClick={() => setConfirmModal(false)}
+						className="absolute right-4 top-4 rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800"
+					>
+						<FiX className="w-5 h-5" />
+					</button>
+
+					<div className="px-2">
+						<h4 className="text-xl font-bold text-gray-800 dark:text-white/90 mb-2">Confirmation</h4>
+						<p className="text-sm text-gray-600 dark:text-gray-400 mb-6">Vous voulez vraiment annuler ?</p>
+
+						<div className="flex justify-end gap-3 pt-2">
+							<Button variant="outline" onClick={() => setConfirmModal(false)}>
+								Reture
+							</Button>
+							<Button
+								onClick={() => handleAppAnulation(selectedApp?.id)}
+								className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600"
+							>
+								Confirmer
+							</Button>
+						</div>
+					</div>
+				</div>
+			</Modal>
 			{/* Modal de filtres */}
-			<Modal isOpen={isOpen} onClose={closeModal} className="max-w-2xl">
+			{/* <Modal isOpen={isOpen} onClose={closeModal} className="max-w-2xl">
 				<div className="no-scrollbar relative w-full overflow-y-auto rounded-2xl bg-white p-6 dark:bg-gray-900 lg:p-8">
 					<button
 						onClick={closeModal}
@@ -693,7 +690,7 @@ export default function EntrepriseJobSearchCard() {
 						</div>
 					</div>
 				</div>
-			</Modal>
-		</div >
+			</Modal> */}
+		</div>
 	);
 }
