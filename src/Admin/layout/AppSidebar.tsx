@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
-import { PuzzleIcon } from "lucide-react";
+import { BriefcaseIcon, PuzzleIcon } from "lucide-react";
 
 import {
     CalenderIcon,
@@ -9,18 +9,17 @@ import {
     HorizontaLDots,
     GroupIcon
 } from "../../icons";
+
 import { useSidebar } from "../../context/SidebarContext";
 import SidebarWidget from "../../layout/SidebarWidget";
-import { ListCheckIcon } from "lucide-react";
-import { BriefcaseIcon } from "lucide-react";
-// ✅ Nouvel icône
+import { useAuth } from "../../auth/authContext";
+
 type NavItem = {
     name: string;
     icon: React.ReactNode;
     path?: string;
     subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
 };
-
 
 const navItems: NavItem[] = [
     {
@@ -43,7 +42,7 @@ const navItems: NavItem[] = [
         path: "/admin/calendar"
     },
     {
-        icon: <BriefcaseIcon className="w-5 h-5" />, // ✅ Icône unique pour Stages
+        icon: <BriefcaseIcon className="w-5 h-5" />,
         name: "Stages",
         path: "/admin/stages"
     },
@@ -64,13 +63,20 @@ const navItems: NavItem[] = [
 ];
 
 const AppSidebar: React.FC = () => {
+
+    const { logout } = useAuth();
+
     const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
+
     const location = useLocation();
+
     const [openSubmenu, setOpenSubmenu] = useState<{
         type: "main" | "others";
         index: number;
     } | null>(null);
+
     const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>({});
+    
     const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
     const isActive = useCallback(
@@ -303,7 +309,7 @@ const AppSidebar: React.FC = () => {
             <div className="mt-auto mb-6 px-3">
                 <button
                     onClick={() => {
-                        // TODO: Remplace ceci par ton système de logout
+                        logout();
                         console.log("Déconnexion...");
                     }}
                     className="w-full rounded-lg bg-transparent px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:text-black border border-transparent transition-colors duration-200"

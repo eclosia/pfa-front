@@ -11,6 +11,9 @@ interface AlertProps {
     onClose?: () => void;
     autoClose?: boolean;
     duration?: number;
+    doAction?: boolean;
+    actionText?: string;
+    action?: () => void;
 }
 
 export const Alert = ({
@@ -22,7 +25,10 @@ export const Alert = ({
     linkText = 'En savoir plus',
     onClose,
     autoClose = true,
-    duration = 5000
+    duration = 5000,
+    actionText = 'Action',
+    doAction = false,
+    action
 }: AlertProps) => {
     const [isVisible, setIsVisible] = useState(true);
 
@@ -101,6 +107,18 @@ export const Alert = ({
                             >
                                 {linkText} →
                             </a>
+                        </div>
+                    )}
+                    {doAction && (
+                        <div className="mt-2">
+                            <button
+                                onClick={() => {
+                                    action?.();
+                                }}
+                                className={`text-sm font-medium hover:underline ${variantClasses[variant].link}`}
+                            >
+                                {actionText} →
+                            </button>
                         </div>
                     )}
                 </div>

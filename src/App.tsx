@@ -12,6 +12,7 @@ import StudentHome from "./Student/pages/StudentHome";
 import UserProfiles from "./Student/pages/UserProfiles";
 import MessagingPage from "./Student/pages/MessagingPage";
 import JobOffers from "./Student/pages/JobOffers";
+import JobApplications from "./Student/pages/JobApplications";
 import CompanyOffers from "./Student/pages/CompanyOffers";
 import StudentEvaluation from "./Student/pages/StudentEvaluation";
 
@@ -78,6 +79,7 @@ export default function App() {
 
                         {/* Job Offers */}
                         <Route path="job-offers" element={<JobOffers />} />
+                        <Route path="job-applications" element={<JobApplications />} />
 
                         {/* Company Management */}
                         <Route path="company-offers" element={<CompanyOffers />} />

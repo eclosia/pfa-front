@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import { useModal } from "../../../hooks/useModal";
 import { Modal } from "../../../components/ui/modal";
 import Button from "../../../components/ui/button/Button";
-import Input from "../../../components/form/input/InputField";
 import Label from "../../../components/form/Label";
 import { Alert } from "../../../components/ui/alert/Alert";
-import { FiSearch, FiFilter, FiX, FiCheck, FiUpload, FiCalendar, FiDollarSign, FiMapPin, FiBriefcase, FiClock, FiUser, FiMail, FiPhone, FiFileText } from "react-icons/fi";
+import { FiSearch, FiFilter, FiX, FiCheck, FiUpload, FiCalendar, FiDollarSign, FiMapPin, FiBriefcase, FiClock, FiUser } from "react-icons/fi";
 import { useAuth } from "../../../auth/authContext";
 
 interface JobOffer {
@@ -98,7 +97,7 @@ export default function UserJobSearchCard() {
 
 		} catch (error) {
 			setIsLoading(false);
-			console.error("Erreur lors de la recuperation des l'offres:", error);
+			console.error("Erreur lors de la recuperation des offres:", error);
 		}
 	}
 
@@ -166,8 +165,8 @@ export default function UserJobSearchCard() {
                 body: JSON.stringify({
                     "cv_path": "sadik",
                     "motivation_path": "sadik",
-                    "etudiant_id": 45, // user?.id,
-                    "stage_id": 6 // selectedOffer?.id,
+                    "etudiant_id": 45, // TODO: replace 45 by user?.id
+                    "stage_id": 6 // TODO: replace 6 by selectedOffer?.id
                 })
             });
             if (!response.ok) {
