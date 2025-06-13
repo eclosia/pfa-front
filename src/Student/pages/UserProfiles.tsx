@@ -32,23 +32,23 @@ export default function UserProfiles() {
         }
     });
 
-    useEffect(() => {
-        fetch("http://localhost:8080/student/profile/1").then
-            (response => {
-                if (response.ok) {
-                    console.log("Response is ok");
-                    return response.json();
-                }
-                throw new Error("Network response was not ok.");
-            })
-            .then(data => {
-                console.log(data);
-                setData(data);
-            })
-            .catch(error => {
-                console.error("There was a problem with the fetch operation:", error);
-            });
-    }, []);
+    // useEffect(() => {
+    //     fetch("http://localhost:8080/student/profile/1").then
+    //         (response => {
+    //             if (response.ok) {
+    //                 console.log("Response is ok");
+    //                 return response.json();
+    //             }
+    //             throw new Error("Network response was not ok.");
+    //         })
+    //         .then(data => {
+    //             console.log(data);
+    //             setData(data);
+    //         })
+    //         .catch(error => {
+    //             console.error("There was a problem with the fetch operation:", error);
+    //         });
+    // }, []);
 
 
     return (
@@ -66,7 +66,7 @@ export default function UserProfiles() {
                     <UserMetaCard data={data} />
                     <UserInfoCard data={data} />
                     <UserAddressCard />
-                    <UserSkillsCard />
+                    <UserSkillsCard /> 
                     <UserAcademicPathCard />
                     <UserExperienceCard  />
                 </div>

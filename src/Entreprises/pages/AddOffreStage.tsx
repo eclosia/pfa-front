@@ -24,6 +24,8 @@ interface OffreStageFormData {
 
 const AddOffreStage: FC = () => {
 
+    const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
     const { user } = useAuth();
 
     const navigate = useNavigate();
@@ -80,7 +82,7 @@ const AddOffreStage: FC = () => {
         e.preventDefault();
         try {
             console.log(JSON.stringify(formData));
-            const response = await fetch('http://localhost:8082/api/stages', {
+            const response = await fetch(`${baseUrl}/api/stages`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

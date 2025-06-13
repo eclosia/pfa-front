@@ -12,7 +12,7 @@ class AuthService {
 	public readonly baseURL: string;
 
 	constructor() {
-		this.baseURL = 'http://localhost:8081'; // TODO: Make this configurable
+		this.baseURL = import.meta.env.VITE_API_BASE_URL; // TODO: Make this configurable
 	}
 
 	public setToken(token: string): void {

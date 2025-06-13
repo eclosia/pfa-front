@@ -21,13 +21,13 @@ interface UserProps {
 export default function UserMetaCard({ data }: UserProps) {
 
     const { user } = data;
-    
+
     const { isOpen, openModal, closeModal } = useModal();
     const [cvFile, setCvFile] = useState<File | null>(null);
     const [cvName, setCvName] = useState<string>("");
     const [showCvPreview, setShowCvPreview] = useState(false);
 
-    
+
     const handleSave = () => {
         console.log("Saving changes...", { cvFile, cvName });
         closeModal();
@@ -57,53 +57,65 @@ export default function UserMetaCard({ data }: UserProps) {
         <>
             <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
                 <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-                    <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
-                        <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
-                            <img src="/images/user/owner.jpg" alt="user" />
-                        </div>
-                        <div className="order-3 xl:order-2">
-                            <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
-                                {user.firstName} {user.lastName}
-                            </h4>
-                            <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Etudiant
-                                </p>
-                                <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    {user.location}
-                                </p>
+                    <div className="flex flex-col items-center w-full gap-6 xl:items-start xl:gap-4 xl:flex-col">
+                        {/* Ligne 1 : image + actions */}
+                        <div className="flex items-center justify-between w-full gap-6">
+                            {/* Image */}
+                            <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
+                                <img src="/images/user/owner.jpg" alt="user" />
                             </div>
-                        </div>
-                        <div className="flex items-center order-2 gap-4 grow xl:order-3 xl:justify-end">
-                            {cvFile ? (
-                                <div
-                                    onClick={handleCvClick}
-                                    className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-full cursor-pointer transition-all duration-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
-                                >
-                                    <svg
-                                        className="fill-current text-blue-600 dark:text-blue-400"
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM18 20H6V4H13V9H18V20ZM8 14H16V16H8V14ZM8 10H16V12H8V10Z"
-                                            fill="currentColor"
-                                        />
-                                    </svg>
-                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{cvName}</span>
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleRemoveCV();
-                                        }}
-                                        className="ml-2 text-red-500 hover:text-red-700 transition-colors duration-200"
+
+                            {/* Actions (CV + LinkedIn) */}
+                            <div className="flex items-center gap-4 grow justify-end">
+                                {cvFile ? (
+                                    <div
+                                        onClick={handleCvClick}
+                                        className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-full cursor-pointer transition-all duration-200 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
                                     >
                                         <svg
-                                            className="w-4 h-4"
+                                            className="fill-current text-blue-600 dark:text-blue-400"
+                                            width="20"
+                                            height="20"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM18 20H6V4H13V9H18V20ZM8 14H16V16H8V14ZM8 10H16V12H8V10Z"
+                                                fill="currentColor"
+                                            />
+                                        </svg>
+                                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{cvName}</span>
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleRemoveCV();
+                                            }}
+                                            className="ml-2 text-red-500 hover:text-red-700 transition-colors duration-200"
+                                        >
+                                            <svg
+                                                className="w-4 h-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button
+                                        onClick={openModal}
+                                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-full transition-all duration-200 hover:bg-gray-50 dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800"
+                                    >
+                                        <svg
+                                            className="w-5 h-5 text-blue-600 dark:text-blue-400"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -113,58 +125,52 @@ export default function UserMetaCard({ data }: UserProps) {
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
                                                 strokeWidth="2"
-                                                d="M6 18L18 6M6 6l12 12"
+                                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                                             />
                                         </svg>
+                                        Ajouter CV
                                     </button>
-                                </div>
-                            ) : (
-                                <button
-                                    onClick={openModal}
-                                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-200 rounded-full transition-all duration-200 hover:bg-gray-50 dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800"
+                                )}
+
+                                <div className="h-8 w-px bg-gray-200 dark:bg-gray-700"></div>
+
+                                <a
+                                    href="https://www.linkedin.com/company/pimjo"
+                                    target="_blank"
+                                    rel="noopener"
+                                    className="flex h-11 w-11 items-center justify-center gap-2 rounded-full border border-gray-300 bg-white text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
                                 >
                                     <svg
-                                        className="w-5 h-5 text-blue-600 dark:text-blue-400"
+                                        className="fill-current"
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 20 20"
                                         fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
                                         xmlns="http://www.w3.org/2000/svg"
                                     >
                                         <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                                            d="M5.78381 4.16645C5.78351 4.84504 5.37181 5.45569 4.74286 5.71045C4.11391 5.96521 3.39331 5.81321 2.92083 5.32613C2.44836 4.83904 2.31837 4.11413 2.59216 3.49323C2.86596 2.87233 3.48886 2.47942 4.16715 2.49978C5.06804 2.52682 5.78422 3.26515 5.78381 4.16645ZM5.83381 7.06645H2.50048V17.4998H5.83381V7.06645ZM11.1005 7.06645H7.78381V17.4998H11.0672V12.0248C11.0672 8.97475 15.0422 8.69142 15.0422 12.0248V17.4998H18.3338V10.8914C18.3338 5.74978 12.4505 5.94145 11.0672 8.46642L11.1005 7.06645Z"
+                                            fill=""
                                         />
                                     </svg>
-                                    Ajouter CV
-                                </button>
-                            )}
+                                </a>
+                            </div>
+                        </div>
 
-                            <div className="h-8 w-px bg-gray-200 dark:bg-gray-700"></div>
-
-                            <a
-                                href="https://www.linkedin.com/company/pimjo"
-                                target="_blank"
-                                rel="noopener"
-                                className="flex h-11 w-11 items-center justify-center gap-2 rounded-full border border-gray-300 bg-white text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
-                            >
-                                <svg
-                                    className="fill-current"
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 20 20"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M5.78381 4.16645C5.78351 4.84504 5.37181 5.45569 4.74286 5.71045C4.11391 5.96521 3.39331 5.81321 2.92083 5.32613C2.44836 4.83904 2.31837 4.11413 2.59216 3.49323C2.86596 2.87233 3.48886 2.47942 4.16715 2.49978C5.06804 2.52682 5.78422 3.26515 5.78381 4.16645ZM5.83381 7.06645H2.50048V17.4998H5.83381V7.06645ZM11.1005 7.06645H7.78381V17.4998H11.0672V12.0248C11.0672 8.97475 15.0422 8.69142 15.0422 12.0248V17.4998H18.3338V10.8914C18.3338 5.74978 12.4505 5.94145 11.0672 8.46642L11.1005 7.06645Z"
-                                        fill=""
-                                    />
-                                </svg>
-                            </a>
+                        {/* Ligne 2 : infos personnelles */}
+                        <div className="w-full text-center xl:text-left">
+                            <h4 className="mb-2 text-lg font-semibold text-gray-800 dark:text-white/90">
+                                {user.firstName} {user.lastName}
+                            </h4>
+                            <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
+                                <p className="text-sm text-gray-500 dark:text-gray-400">Etudiant</p>
+                                <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">{user.location}</p>
+                            </div>
                         </div>
                     </div>
+
+
                     <button
                         onClick={openModal}
                         className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200 lg:inline-flex lg:w-auto"

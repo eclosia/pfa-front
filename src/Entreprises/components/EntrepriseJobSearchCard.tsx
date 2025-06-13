@@ -27,6 +27,8 @@ interface JobOffer {
 
 export default function EntrepriseJobSearchCard() {
 
+	const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 	const { user } = useAuth();
 
 	const { isOpen, openModal, closeModal } = useModal();
@@ -50,7 +52,7 @@ export default function EntrepriseJobSearchCard() {
 
 	const fetchOffers = async () => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/stages/enterprise/12345`, { // ${user.id}
+			const response = await fetch(`${baseUrl}/api/stages/enterprise/12345`, { // ${user.id}
 				method: 'GET',
 			});
 
@@ -126,7 +128,7 @@ export default function EntrepriseJobSearchCard() {
 
 	const handleDelete = async (offer: JobOffer) => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/stages/${offer.id}`, {
+			const response = await fetch(`${baseUrl}/api/stages/${offer.id}`, {
 				method: 'DELETE',
 			});
 

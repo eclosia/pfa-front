@@ -8,10 +8,16 @@ import Button from "../ui/button/Button";
 
 export default function SignUpForm() {
 
+    const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
     const [currentStep, setCurrentStep] = useState(1);
+
     const [showPassword, setShowPassword] = useState(false);
+
     const [isChecked, setIsChecked] = useState(false);
+
     const [isloading, setIsLoading] = useState(false)
+
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -35,16 +41,16 @@ export default function SignUpForm() {
         }));
     };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
         try {
-            const response = await fetch('http://localhost:8081/auth/register', {
+            const response = await fetch(`${baseUrl}/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                
+
                 body: JSON.stringify({
                     "firstName": formData.firstName,
                     "lastName": formData.lastName,
@@ -65,8 +71,8 @@ export default function SignUpForm() {
             if (!response.ok) {
                 setIsLoading(false)
                 throw new Error(`Erreur HTTP: ${response.status} ${response.statusText}`);
-            }else{
-                 navigate('/signin');
+            } else {
+                navigate('/signin');
             }
 
         } catch (error) {
@@ -78,7 +84,7 @@ export default function SignUpForm() {
                 message: error instanceof Error ? error.message : 'Erreur inconnue lors de l\'inscription'
             };
         }
-  };
+    };
 
     const nextStep = () => {
         setCurrentStep(prev => prev + 1);

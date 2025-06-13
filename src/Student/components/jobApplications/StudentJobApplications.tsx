@@ -38,6 +38,8 @@ interface Stage {
 
 export default function StudentJobApplications() {
 
+	const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 	const { user } = useAuth();
 
 	const [applications, setApplications] = useState<Application[]>([]);
@@ -70,7 +72,7 @@ export default function StudentJobApplications() {
 
 	const fetchApplications = async () => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/condidature/45`, { // TODO: replace 45 with ${user?.id}
+			const response = await fetch(`${baseUrl}/api/condidature/45`, { // TODO: replace 45 with ${user?.id}
 				method: 'GET',
 			});
 
@@ -103,7 +105,7 @@ export default function StudentJobApplications() {
 
 	const handleViewDetails = async (stage_id: number) => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/stages/${stage_id}`, {
+			const response = await fetch(`${baseUrl}/api/stages/${stage_id}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json'
@@ -134,7 +136,7 @@ export default function StudentJobApplications() {
 
 	const handleAppAnulation = async (id: number | undefined) => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/condidature/${id}`, {
+			const response = await fetch(`${baseUrl}82/api/condidature/${id}`, {
 				method: 'DELETE',
 			});
 			if (!response.ok) {

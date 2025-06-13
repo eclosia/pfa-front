@@ -38,6 +38,8 @@ interface Stage {
 
 export default function EntrepriseJobApplications() {
 
+	const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 	const { user } = useAuth();
 
 	const [applications, setApplications] = useState<Application[]>([]);
@@ -70,7 +72,7 @@ export default function EntrepriseJobApplications() {
 
 	const fetchApplications = async () => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/condidature/entreprise/6`, { // TODO: replace 6 with ${user?.id}
+			const response = await fetch(`${baseUrl}/api/condidature/entreprise/6`, { // TODO: replace 6 with ${user?.id}
 				method: 'GET',
 			});
 
@@ -102,7 +104,7 @@ export default function EntrepriseJobApplications() {
 
 	const handleViewDetails = async (stage_id: number) => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/stages/${stage_id}`, {
+			const response = await fetch(`${baseUrl}/api/stages/${stage_id}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json'
@@ -133,7 +135,7 @@ export default function EntrepriseJobApplications() {
 
 	const handleAppAnulation = async (id: number | undefined) => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/condidature/${id}`, {
+			const response = await fetch(`${baseUrl}/api/condidature/${id}`, {
 				method: 'DELETE',
 			});
 			if (!response.ok) {
@@ -167,7 +169,7 @@ export default function EntrepriseJobApplications() {
 
 	const handleAccepteApp = async (id: number | undefined) => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/condidature/accepte/${id}`, {
+			const response = await fetch(`${baseUrl}/api/condidature/accepte/${id}`, {
 				method: 'PUT',
 			});
 			if (!response.ok) {
@@ -199,7 +201,7 @@ export default function EntrepriseJobApplications() {
 
 	const handleRejectApp = async (id: number | undefined) => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/condidature/reject/${id}`, {
+			const response = await fetch(`${baseUrl}/api/condidature/reject/${id}`, {
 				method: 'PUT',
 			});
 			if (!response.ok) {

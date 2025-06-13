@@ -37,6 +37,8 @@ interface ApplicationData {
 
 export default function UserJobSearchCard() {
 
+    const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
     const { user } = useAuth();
 
     const { isOpen, openModal, closeModal } = useModal();
@@ -83,7 +85,7 @@ export default function UserJobSearchCard() {
 
     const fetchOffers = async () => {
 		try {
-			const response = await fetch(`http://localhost:8082/api/stages`, {
+			const response = await fetch(`${baseUrl}/api/stages`, {
 				method: 'GET',
 			});
 
@@ -158,7 +160,7 @@ export default function UserJobSearchCard() {
     const handleApplicationSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8082/api/condidature', {
+            const response = await fetch(`${baseUrl}/api/condidature`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
