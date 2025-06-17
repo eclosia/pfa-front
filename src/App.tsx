@@ -39,6 +39,7 @@ import Soutenances from "./Teacher/pages/Soutenances";
 import Evaluations from "./Teacher/pages/Evaluations";
 import ProfileTeacher from "./Teacher/pages/ProfileTeacher";
 import MessagingPageTeacher from "./Teacher/pages/MessagingPageTeacher";
+import ProposerPFA from "./Teacher/pages/ProposerPFA";
 
 
 // Entreprise Components
@@ -103,6 +104,8 @@ export default function App() {
                     <Route path="stages" element={<Stages />} />
                     <Route path="AddTeacher" element={<AddTeacher />} />
                     <Route path="AddEntreprise" element={<AddEntreprise />} />
+                    <Route path="AffectationForm" element={<AffectationForm />} />
+
                 </Route>
 
                     {/* Teacher Routes */}
@@ -119,6 +122,7 @@ export default function App() {
                         <Route path="evaluations" element={<Evaluations />} />
                         <Route path="profile" element={<ProfileTeacher />} />
                         <Route path="messages" element={<MessagingPageTeacher />} />
+                        <Route path="ProposerPFA" element={<ProposerPFA />} />
                         {/* Ajoute cette route si tu veux une page stats */}
                         <Route path="stats" element={<div>Statistiques (à implémenter)</div>} />
                     </Route>

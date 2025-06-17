@@ -60,8 +60,8 @@ const Input = ({
 
 const ProfileTeacher = () => {
   const [profile, setProfile] = useState({
-    fullName: 'M. Youssef Amrani',
-    email: 'youssef.amrani@univ.edu',
+    fullName: 'M. Karim Bennani',
+    email: 'karim.bennani@univ.edu',
     department: 'Informatique / GINF',
     grade: 'Maître Assistant',
     specialities: 'IA, Machine Learning, Sécurité Informatique',

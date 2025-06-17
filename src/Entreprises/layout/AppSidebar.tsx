@@ -5,13 +5,17 @@ import {
     ChevronDownIcon,
     GridIcon,
     HorizontaLDots,
-    PageIcon,
-    UserIcon,
 } from "../../icons";
  
 import { useSidebar } from "../../context/SidebarContext";
 import SidebarWidget from "../../layout/SidebarWidget";
-import { ListCheckIcon } from "lucide-react";
+import { 
+    ListCheckIcon,
+    FileTextIcon,
+    BriefcaseIcon,
+    UserIcon,
+    LogOutIcon
+} from "lucide-react";
 import { useAuth } from "../../auth/authContext";
 
 type NavItem = {
@@ -22,35 +26,31 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
+    // {
+    //     icon: <GridIcon />,
+    //     name: "Tableau de bord ",
+    //     path: "/entreprise"
+    // },
     {
-        icon: <GridIcon />,
-        name: "Tableau de bord ",
-        path: "/entreprise"
-    },
-    {
-        icon: <ListCheckIcon />,
+        icon: <BriefcaseIcon className="w-5 h-5" />,
         name: "Ajouter une offre",
         path: "/entreprise/addOffreStage",
     },
     {
-        icon: <PageIcon />,
+        icon: <FileTextIcon className="w-5 h-5" />,
         name: "Stages",
         path: "/entreprise/job-offers",
     },
     {
-        icon: <PageIcon />,
+        icon: <ListCheckIcon className="w-5 h-5" />,
         name: "Candidatures",
         path: "/entreprise/job-applications",
     }
-
 ];
 
 const AppSidebar: React.FC = () => {
-
     const { logout } = useAuth();
-
     const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
-
     const location = useLocation();
 
     const [openSubmenu, setOpenSubmenu] = useState<{
@@ -59,7 +59,6 @@ const AppSidebar: React.FC = () => {
     } | null>(null);
 
     const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>({});
-
     const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
     const isActive = useCallback(
@@ -295,8 +294,6 @@ const AppSidebar: React.FC = () => {
                             {renderMenuItems(navItems, "main")}
                         </div>
                         <div className="">
-
-
                         </div>
                     </div>
                 </nav>
@@ -309,14 +306,12 @@ const AppSidebar: React.FC = () => {
                         logout();
                         console.log("Déconnexion...");
                     }}
-                    className="w-full rounded-lg bg-transparent px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:text-black border border-transparent transition-colors duration-200"
+                    className="flex items-center justify-center w-full gap-2 rounded-lg bg-transparent px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:text-black border border-transparent transition-colors duration-200"
                 >
-                    Déconnexion
+                    <LogOutIcon className="w-5 h-5" />
+                    {(isExpanded || isHovered || isMobileOpen) && "Déconnexion"}
                 </button>
             </div>
-
-
-
         </aside>
     );
 };

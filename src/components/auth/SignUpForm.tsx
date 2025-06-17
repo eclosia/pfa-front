@@ -99,7 +99,7 @@ export default function SignUpForm() {
             { number: 1, title: "Informations personnelles" },
             { number: 2, title: "Informations académiques" },
             { number: 3, title: "Contact" },
-            { number: 4, title: "Sécurité" }
+            { number: 4, title: "Validation" }
         ];
 
         return (

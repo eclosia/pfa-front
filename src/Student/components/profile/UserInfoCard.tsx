@@ -199,7 +199,7 @@ export default function UserInfoCard({ data }: UserProps) {
                                 Prenom
                             </p>
                             <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                {user.firstName}
+                                Rida 
                             </p>
                         </div>
 
@@ -208,7 +208,7 @@ export default function UserInfoCard({ data }: UserProps) {
                                 Nom
                             </p>
                             <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                {user.lastName}
+                                Mihi
                             </p>
                         </div>
 
@@ -217,7 +217,7 @@ export default function UserInfoCard({ data }: UserProps) {
                                 Email personnel
                             </p>
                             <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                {user.email}
+                                ridamihi12@gmail.com
                             </p>
                         </div>
 
@@ -226,7 +226,7 @@ export default function UserInfoCard({ data }: UserProps) {
                                 Email académique
                             </p>
                             <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                {user.email}
+                                rida.mihi.23@ump.ac.ma
                             </p>
                         </div>
 
@@ -235,7 +235,7 @@ export default function UserInfoCard({ data }: UserProps) {
                                 Téléphone
                             </p>
                             <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                {user.phoneNumber}
+                                0680501253
                             </p>
                         </div>
 
@@ -244,7 +244,7 @@ export default function UserInfoCard({ data }: UserProps) {
                                 numéro apogée
                             </p>
                             <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                {user.apogeeNumber}
+                                653297
                             </p>
                         </div>
                     </div>
